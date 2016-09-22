@@ -4,10 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
-
-import sun.net.www.content.audio.x_aiff;
-
 
 public class IPv4_Header {
 	private int version = 0;
@@ -16,7 +12,7 @@ public class IPv4_Header {
 	private int id = 0; // Kennung
 	private String flag = "000";
 	private int fragment_offset = 0;
-	private int ttl = 32;
+	private int ttl = 0;
 	private int protocol = 0;
 	private String s_ip = ""; // source ip adress
 	private String t_ip =""; // target ip adress
@@ -41,9 +37,10 @@ public class IPv4_Header {
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			for (int i = 0; i < 10; i++) {
-				if (i == 10) {
-					version = Integer.parseInt(header.get(0));
-					System.out.println(header.get(0));
+				System.out.println(input_text[i]);
+				header.add(bReader.readLine());
+				if (header.size() == 10) {
+					version = Integer.parseInt(header.get(0).toString());
 					ihl = Integer.parseInt(header.get(1));
 					tos = Integer.parseInt(header.get(2));
 					id = Integer.parseInt(header.get(3));
@@ -54,14 +51,11 @@ public class IPv4_Header {
 					s_ip = header.get(8).toString();
 					t_ip = header.get(9).toString();
 				}
-				System.out.println(input_text[i]);
-				header.add(bReader.readLine());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 	public void printStr() {
 		String output = "";
 		char seperator = '-';
@@ -87,15 +81,15 @@ public class IPv4_Header {
 		b_header.add(Integer.toBinaryString(fragment_offset));
 		b_header.add(Integer.toBinaryString(ttl));
 		b_header.add(Integer.toBinaryString(protocol));
+		
 		// source ip to binary
 		String[] sip_temp = s_ip.split(".");
 		String b_sip = "";
-		int count = 0;
-		for (String string : sip_temp) {
-			String x = Integer.toBinaryString(Integer.parseInt(string));
-			if (count < sip_temp.length) {
-				b_sip = b_sip + x + "";
-				count++;
+		//TODO loop not functional
+		for (int i = 0; i < sip_temp.length; i++) {
+			String x = Integer.toBinaryString(Integer.parseInt(sip_temp[i]));
+			if (i < sip_temp.length -1) {
+				b_sip = b_sip + x + " ";
 			} else {
 				b_sip = b_sip + x;
 			}
