@@ -8,6 +8,9 @@ public class IP_Calculator {
 		header.setHeader(); // set the header
 		
 		header.printStr();
+		
+		
+		header.toBinary();
 	}
 
 }
