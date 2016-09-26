@@ -16,7 +16,7 @@ public class IPv4_Header {
 	private int protocol = 0;
 	private String s_ip = ""; // source ip adress
 	private String t_ip =""; // target ip adress
-	
+
 	String[] input_text = {
 			"Version:",
 			"IP Header Length (IHL):",
@@ -29,10 +29,10 @@ public class IPv4_Header {
 			"source IP adress:",
 			"target IP adress:"
 	};
-	
+
 	private ArrayList<String> header = new ArrayList<String>();
 	private ArrayList<String> b_header = new ArrayList<String>();
-	
+
 	public void setHeader() {
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
 		try {
@@ -55,7 +55,7 @@ public class IPv4_Header {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}	
+	}
 	public void printStr() {
 		String output = "";
 		char seperator = '-';
@@ -70,10 +70,15 @@ public class IPv4_Header {
 		}
 		System.out.println("Header information:\n" + output);
 	}
-	
+	public String leadingZero(String s, int b) {
+		while (s.length() < b) {
+			s = '0' + s;
+		}
+		return s;
+	}
 	public void toBinary() {
 		// TODO: implement proper padding
-		b_header.add(Integer.toBinaryString(version));		
+		b_header.add(Integer.toBinaryString(version));
 		b_header.add(Integer.toBinaryString(ihl));
 		b_header.add(Integer.toBinaryString(tos));
 		b_header.add(Integer.toBinaryString(id));
@@ -81,12 +86,12 @@ public class IPv4_Header {
 		b_header.add(Integer.toBinaryString(fragment_offset));
 		b_header.add(Integer.toBinaryString(ttl));
 		b_header.add(Integer.toBinaryString(protocol));
-		
+
 		// source ip to binary
 		String[] sip_temp = s_ip.split("\\."); // splits the ip address per "." and returns an array
 		String b_sip = ""; // binary string
 		for (int i = 0; i < sip_temp.length; i++) {
-			String x = Integer.toBinaryString(Integer.parseInt(sip_temp[i]));
+			String x = leadingZero(Integer.toBinaryString(Integer.parseInt(sip_temp[i])), 8);
 			if (i < sip_temp.length -1) {
 				b_sip = b_sip + x + " ";
 			} else {
@@ -98,7 +103,7 @@ public class IPv4_Header {
 		String[] tip_temp = t_ip.split("\\.");
 		String b_tip= "";
 		for (int i = 0; i < tip_temp.length; i++) {
-			String x = Integer.toBinaryString(Integer.parseInt(sip_temp[i]));
+			String x = leadingZero(Integer.toBinaryString(Integer.parseInt(tip_temp[i])), 8);
 			if (i < tip_temp.length) {
 				b_tip = b_tip + x + " ";
 			} else {
