@@ -23,8 +23,8 @@ public class IPv4_Header {
 			"type of service (TOS):",
 			"ID:",
 			"flag:",
-			"fragment-offset",
-			"time-to-live (TTL)",
+			"fragment-offset:",
+			"time-to-live (TTL):",
 			"protocol:",
 			"source IP adress:",
 			"target IP adress:"
