@@ -22,12 +22,12 @@ public class IPv4_Header {
 			"IP Header Length (IHL):",
 			"type of service (TOS):",
 			"ID:",
-			"flag",
+			"flag:",
 			"fragment-offset",
 			"time-to-live (TTL)",
-			"protocol",
-			"source IP adress",
-			"target IP adress"
+			"protocol:",
+			"source IP adress:",
+			"target IP adress:"
 	};
 	
 	private ArrayList<String> header = new ArrayList<String>();
@@ -83,9 +83,8 @@ public class IPv4_Header {
 		b_header.add(Integer.toBinaryString(protocol));
 		
 		// source ip to binary
-		String[] sip_temp = s_ip.split(".");
-		String b_sip = "";
-		//TODO loop not functional
+		String[] sip_temp = s_ip.split("\\."); // splits the ip address per "." and returns an array
+		String b_sip = ""; // binary string
 		for (int i = 0; i < sip_temp.length; i++) {
 			String x = Integer.toBinaryString(Integer.parseInt(sip_temp[i]));
 			if (i < sip_temp.length -1) {
@@ -96,6 +95,17 @@ public class IPv4_Header {
 		}
 		b_header.add(b_sip);
 		// target ip to binary
+		String[] tip_temp = t_ip.split("\\.");
+		String b_tip= "";
+		for (int i = 0; i < tip_temp.length; i++) {
+			String x = Integer.toBinaryString(Integer.parseInt(sip_temp[i]));
+			if (i < tip_temp.length) {
+				b_tip = b_tip + x + " ";
+			} else {
+				b_tip = b_tip + x;
+			}
+		}
+		b_header.add(b_tip);
 		System.out.println(b_header.toString());
 	}
 }
