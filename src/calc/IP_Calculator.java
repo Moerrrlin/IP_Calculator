@@ -8,7 +8,7 @@ public class IP_Calculator {
 		header.setHeader(); // set the header via user input
 		
 		header.printStr(); // print the header information
-		
+
 		header.toBinary(); // print the header in binary format
 	}
 

@@ -9,6 +9,7 @@ public class IPv4_Header {
 	private int version = 0;
 	private int ihl = 0; // IP header length
 	private int tos = 0; // type of service
+	private int total_length = 0;
 	private int id = 0; // Kennung
 	private String flag = "000";
 	private int fragment_offset = 0;
@@ -21,6 +22,7 @@ public class IPv4_Header {
 			"Version:",
 			"IP Header Length (IHL):",
 			"type of service (TOS):",
+			"total length:",
 			"ID:",
 			"flag:",
 			"fragment-offset:",
@@ -36,20 +38,21 @@ public class IPv4_Header {
 	public void setHeader() {
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
 		try {
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 11; i++) {
 				System.out.println(input_text[i]);
 				header.add(bReader.readLine());
-				if (header.size() == 10) {
+				if (header.size() == 11) {
 					version = Integer.parseInt(header.get(0).toString());
 					ihl = Integer.parseInt(header.get(1));
 					tos = Integer.parseInt(header.get(2));
-					id = Integer.parseInt(header.get(3));
-					flag = header.get(4);
-					fragment_offset = Integer.parseInt(header.get(5));
-					ttl = Integer.parseInt(header.get(6));
-					protocol = Integer.parseInt(header.get(7));
-					s_ip = header.get(8).toString();
-					t_ip = header.get(9).toString();
+					total_length = Integer.parseInt(header.get(3));
+					id = Integer.parseInt(header.get(4));
+					flag = header.get(5);
+					fragment_offset = Integer.parseInt(header.get(6));
+					ttl = Integer.parseInt(header.get(7));
+					protocol = Integer.parseInt(header.get(8));
+					s_ip = header.get(9).toString();
+					t_ip = header.get(10).toString();
 				}
 			}
 		} catch (IOException e) {
@@ -68,7 +71,7 @@ public class IPv4_Header {
 				output = output + string;
 			}
 		}
-		System.out.println("Header information:\n" + output);
+		System.out.println("\n"	+ "Header information:\n" + output);
 	}
 	public String leadingZero(String s, int b) {
 		while (s.length() < b) {
@@ -81,6 +84,7 @@ public class IPv4_Header {
 		b_header.add(Integer.toBinaryString(version));
 		b_header.add(Integer.toBinaryString(ihl));
 		b_header.add(Integer.toBinaryString(tos));
+		b_header.add(Integer.toBinaryString(total_length));
 		b_header.add(Integer.toBinaryString(id));
 		b_header.add(flag);
 		b_header.add(Integer.toBinaryString(fragment_offset));
@@ -111,6 +115,8 @@ public class IPv4_Header {
 			}
 		}
 		b_header.add(b_tip);
-		System.out.println(b_header.toString());
+		System.out.println("\n"
+				+ "binary header information:"
+				+ b_header.toString());
 	}
 }
