@@ -6,17 +6,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class IPv4_Header {
+	//TODO: (1) add IP header checksum and computing logic
+	//TODO: (2) add input integrity checks
 	private int version = 0;
 	private int ihl = 0; // IP header length
 	private int tos = 0; // type of service
 	private int total_length = 0;
-	private int id = 0; // Kennung
+	private int id = 0; // identification
 	private String flag = "000";
 	private int fragment_offset = 0;
 	private int ttl = 0;
 	private int protocol = 0;
-	private String s_ip = ""; // source ip adress
-	private String t_ip =""; // target ip adress
+	private String s_ip = ""; // source IP address
+	private String d_ip =""; // destination IP address
 
 	String[] input_text = {
 			"Version:",
@@ -52,7 +54,7 @@ public class IPv4_Header {
 					ttl = Integer.parseInt(header.get(7));
 					protocol = Integer.parseInt(header.get(8));
 					s_ip = header.get(9).toString();
-					t_ip = header.get(10).toString();
+					d_ip = header.get(10).toString();
 				}
 			}
 		} catch (IOException e) {
@@ -94,6 +96,12 @@ public class IPv4_Header {
 		b_header.add(leadingZero(Integer.toBinaryString(version), 4));
 		b_header.add(leadingZero(Integer.toBinaryString(ihl), 4));
 		b_header.add(leadingZero(Integer.toBinaryString(tos), 8));
+		// TEST: print the first 16 bit;
+		String test = b_header.get(0).toString() + b_header.get(1).toString() + b_header.get(2).toString();
+		int dec = Integer.parseInt(test, 2);
+		String hex = Integer.toString(dec, 16);
+		System.out.println(hex);
+		// TEST end
 		b_header.add(leadingZero(Integer.toBinaryString(total_length),16));
 		b_header.add(leadingZero(Integer.toBinaryString(id), 16));
 		b_header.add(flag);
@@ -101,7 +109,7 @@ public class IPv4_Header {
 		b_header.add(leadingZero(Integer.toBinaryString(ttl), 8));
 		b_header.add(leadingZero(Integer.toBinaryString(protocol), 8));
 
-		// source ip to binary
+		// source IP address to binary
 		String[] sip_temp = s_ip.split("\\."); // splits the ip address per "." and returns an array
 		String b_sip = ""; // binary string
 		for (int i = 0; i < sip_temp.length; i++) {
@@ -109,8 +117,8 @@ public class IPv4_Header {
 			b_sip = b_sip + x;
 		}
 		b_header.add(b_sip);
-		// target ip to binary
-		String[] tip_temp = t_ip.split("\\.");
+		// destination IP address to binary
+		String[] tip_temp = d_ip.split("\\.");
 		String b_tip= "";
 		for (int i = 0; i < tip_temp.length; i++) {
 			String x = leadingZero(Integer.toBinaryString(Integer.parseInt(tip_temp[i])), 8);
