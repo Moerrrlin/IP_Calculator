@@ -81,15 +81,15 @@ public class IPv4_Header {
 	}
 	public void toBinary() {
 		// TODO: implement proper padding
-		b_header.add(Integer.toBinaryString(version));
-		b_header.add(Integer.toBinaryString(ihl));
-		b_header.add(Integer.toBinaryString(tos));
-		b_header.add(Integer.toBinaryString(total_length));
-		b_header.add(Integer.toBinaryString(id));
+		b_header.add(leadingZero(Integer.toBinaryString(version), 4));
+		b_header.add(leadingZero(Integer.toBinaryString(ihl), 4));
+		b_header.add(leadingZero(Integer.toBinaryString(tos), 8));
+		b_header.add(leadingZero(Integer.toBinaryString(total_length),16));
+		b_header.add(leadingZero(Integer.toBinaryString(id), 16));
 		b_header.add(flag);
-		b_header.add(Integer.toBinaryString(fragment_offset));
-		b_header.add(Integer.toBinaryString(ttl));
-		b_header.add(Integer.toBinaryString(protocol));
+		b_header.add(leadingZero(Integer.toBinaryString(fragment_offset), 13));
+		b_header.add(leadingZero(Integer.toBinaryString(ttl), 8));
+		b_header.add(leadingZero(Integer.toBinaryString(protocol), 8));
 
 		// source ip to binary
 		String[] sip_temp = s_ip.split("\\."); // splits the ip address per "." and returns an array
