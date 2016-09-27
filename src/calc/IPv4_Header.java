@@ -79,8 +79,18 @@ public class IPv4_Header {
 		}
 		return s;
 	}
+	public String arrayListToString(ArrayList<String> array){
+		String out = "";
+		System.out.println(array.size());
+		for (int i = 0; i < array.size(); i++){
+			out += array.get(i);
+			if(i != (array.size() - 1)){
+				out += " ";
+			}
+		}
+		return out;
+	}
 	public void toBinary() {
-		// TODO: implement proper padding
 		b_header.add(leadingZero(Integer.toBinaryString(version), 4));
 		b_header.add(leadingZero(Integer.toBinaryString(ihl), 4));
 		b_header.add(leadingZero(Integer.toBinaryString(tos), 8));
@@ -96,11 +106,7 @@ public class IPv4_Header {
 		String b_sip = ""; // binary string
 		for (int i = 0; i < sip_temp.length; i++) {
 			String x = leadingZero(Integer.toBinaryString(Integer.parseInt(sip_temp[i])), 8);
-			if (i < sip_temp.length -1) {
-				b_sip = b_sip + x + " ";
-			} else {
-				b_sip = b_sip + x;
-			}
+			b_sip = b_sip + x;
 		}
 		b_header.add(b_sip);
 		// target ip to binary
@@ -108,15 +114,12 @@ public class IPv4_Header {
 		String b_tip= "";
 		for (int i = 0; i < tip_temp.length; i++) {
 			String x = leadingZero(Integer.toBinaryString(Integer.parseInt(tip_temp[i])), 8);
-			if (i < tip_temp.length) {
-				b_tip = b_tip + x + " ";
-			} else {
-				b_tip = b_tip + x;
-			}
+			b_tip = b_tip + x;
 		}
 		b_header.add(b_tip);
+		
 		System.out.println("\n"
 				+ "binary header information:"
-				+ b_header.toString());
+				+ arrayListToString(b_header));
 	}
 }
