@@ -21,40 +21,75 @@ public class IPv4_Header {
 	private String d_ip =""; // destination IP address
 
 	String[] input_text = {
-			"Version:",
-			"IP Header Length (IHL):",
-			"type of service (TOS):",
-			"total length:",
-			"ID:",
-			"flag:",
-			"fragment-offset:",
-			"time-to-live (TTL):",
-			"protocol:",
-			"source IP adress:",
-			"target IP adress:"
+			"Version: ",
+			"IP Header Length (IHL): ",
+			"type of service (TOS): ",
+			"total length: ",
+			"ID: ",
+			"flag: ",
+			"fragment-offset: ",
+			"time-to-live (TTL): ",
+			"protocol: ",
+			"source IP adress: ",
+			"target IP adress: "
 	};
 
 	private ArrayList<String> header = new ArrayList<String>();
 	private ArrayList<String> b_header = new ArrayList<String>();
 
+	public void setVersion(int a) {
+		version = a;
+	}
+	public void setIHL(int a) {
+		ihl = a;
+	}
+	public void setTOS(int a) {
+		tos = a;
+	}
+	public void setTotalLength(int a) {
+		total_length = a;
+	}
+	public void setID(int a) {
+		id = a;
+	}
+	public void setFlag(String s) {
+		flag = s;
+	}
+	public void setFragmentOffset(int a) {
+		fragment_offset = a;
+	}
+	public void setTTL(int a) {
+		ttl = a;
+	}
+	public void setProtocol(int a) {
+		protocol = a;
+	}
+	public void setSIP(String s) {
+		s_ip = s;
+	}
+	public void setDIP(String s) {
+		d_ip = s;
+	}
+
 	public void setHeader() {
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			for (int i = 0; i < 11; i++) {
-				System.out.println(input_text[i]);
+				System.out.print(input_text[i]);
 				header.add(bReader.readLine());
 				if (header.size() == 11) {
-					version = Integer.parseInt(header.get(0).toString());
-					ihl = Integer.parseInt(header.get(1)) * 0,25; // convert input bytes to bit and then divide by 32 (ihl*8/32)
-					tos = Integer.parseInt(header.get(2));
-					total_length = Integer.parseInt(header.get(3));
-					id = Integer.parseInt(header.get(4));
-					flag = header.get(5);
-					fragment_offset = Integer.parseInt(header.get(6));
-					ttl = Integer.parseInt(header.get(7));
-					protocol = Integer.parseInt(header.get(8));
-					s_ip = header.get(9).toString();
-					d_ip = header.get(10).toString();
+					this.setVersion(Integer.parseInt(header.get(0)));
+					this.setIHL(Integer.parseInt(header.get(1)));
+					//ihl = Integer.parseInt(header.get(1)) * 0,25; // convert input bytes to bit and then divide by 32 (ihl*8/32)
+					this.setTOS(Integer.parseInt(header.get(2)));
+					this.setTotalLength(Integer.parseInt(header.get(3)));
+					this.setID(Integer.parseInt(header.get(4)));
+					this.setFlag(header.get(5));
+					this.setFragmentOffset(Integer.parseInt(header.get(6)));
+					this.setTTL(Integer.parseInt(header.get(7)));
+					this.setProtocol(Integer.parseInt(header.get(8)));
+					this.setSIP(header.get(9));
+					this.setDIP(header.get(10));
 				}
 			}
 		} catch (IOException e) {
@@ -81,12 +116,12 @@ public class IPv4_Header {
 		}
 		return s;
 	}
-	public String arrayListToString(ArrayList<String> array){
+	public String arrayListToString(ArrayList<String> array) {
 		String out = "";
 		System.out.println(array.size());
-		for (int i = 0; i < array.size(); i++){
+		for (int i = 0; i < array.size(); i++) {
 			out += array.get(i);
-			if(i != (array.size() - 1)){
+			if(i != (array.size() - 1)) {
 				out += " ";
 			}
 		}
