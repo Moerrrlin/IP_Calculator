@@ -45,7 +45,7 @@ public class IPv4_Header {
 				header.add(bReader.readLine());
 				if (header.size() == 11) {
 					version = Integer.parseInt(header.get(0).toString());
-					ihl = Integer.parseInt(header.get(1));
+					ihl = Integer.parseInt(header.get(1)) * 0,25; // convert input bytes to bit and then divide by 32 (ihl*8/32)
 					tos = Integer.parseInt(header.get(2));
 					total_length = Integer.parseInt(header.get(3));
 					id = Integer.parseInt(header.get(4));
@@ -125,7 +125,7 @@ public class IPv4_Header {
 			b_tip = b_tip + x;
 		}
 		b_header.add(b_tip);
-		
+
 		System.out.println("\n"
 				+ "binary header information:"
 				+ arrayListToString(b_header));
