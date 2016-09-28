@@ -118,7 +118,6 @@ public class IPv4_Header {
 	}
 	public String arrayListToString(ArrayList<String> array) {
 		String out = "";
-		System.out.println(array.size());
 		for (int i = 0; i < array.size(); i++) {
 			out += array.get(i);
 			if(i != (array.size() - 1)) {
