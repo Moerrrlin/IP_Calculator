@@ -1,3 +1,4 @@
 /bin/
-/src/calc/*.class
-cm.txt 
+*.class
+cm.txt
+*.cmd
