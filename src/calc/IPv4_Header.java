@@ -8,17 +8,27 @@ import java.util.ArrayList;
 public class IPv4_Header {
 	//TODO: (1) add IP header checksum and computing logic
 	//TODO: (2) add input integrity checks
-	private int version = 0;
-	private int ihl = 0; // IP header length
-	private int tos = 0; // type of service
-	private int total_length = 0;
-	private int id = 0; // identification
-	private String flag = "000";
-	private int fragment_offset = 0;
-	private int ttl = 0;
-	private int protocol = 0;
-	private String s_ip = ""; // source IP address
-	private String d_ip =""; // destination IP address
+	private int version_dec;
+	private Binary version_bin = new Binary();
+	private int ihl_dec; // IP header length
+	private Binary ihl_bin = new Binary();;
+	private int tos_dec; // type of service
+	private Binary tos_bin = new Binary();;
+	private int total_length_dec;
+	private Binary total_length_bin = new Binary();;
+	private int id_dec; // identification
+	private Binary id_bin = new Binary();;
+	private Binary flag = new Binary();;
+	private int fragment_offset_dec;
+	private Binary fragment_offset_bin = new Binary();;
+	private int ttl_dec;
+	private Binary ttl_bin = new Binary();;
+	private int protocol_dec;
+	private Binary protocol_bin = new Binary();;
+	private String source_ipaddress_dec; // source IP address
+	private Binary source_ipaddress_bin = new Binary();;
+	private String destination_ipaddress_dec; // destination IP address
+	private Binary destination_ipaddress_bin = new Binary();;
 
 	String[] input_text = {
 			"Version: ",
@@ -38,37 +48,45 @@ public class IPv4_Header {
 	private ArrayList<String> b_header = new ArrayList<String>();
 
 	public void setVersion(int a) {
-		version = a;
+		version_dec = a;
+		version_bin.setValue(a, 4);
 	}
 	public void setIHL(int a) {
-		ihl = a;
+		ihl_dec = a;
+		ihl_bin.setValue(a, 4);
 	}
 	public void setTOS(int a) {
-		tos = a;
+		tos_dec = a;
+		tos_bin.setValue(a, 8);
 	}
 	public void setTotalLength(int a) {
-		total_length = a;
+		total_length_dec = a;
+		total_length_bin.setValue(a, 16);
 	}
 	public void setID(int a) {
-		id = a;
+		id_dec = a;
+		id_bin.setValue(a, 16);
 	}
 	public void setFlag(String s) {
-		flag = s;
+		flag.setValue(s, 3);
 	}
 	public void setFragmentOffset(int a) {
-		fragment_offset = a;
+		fragment_offset_dec = a;
+		fragment_offset_bin.setValue(a, 13);
 	}
 	public void setTTL(int a) {
-		ttl = a;
+		ttl_dec = a;
+		ttl_bin.setValue(a, 8);
 	}
 	public void setProtocol(int a) {
-		protocol = a;
+		protocol_dec = a;
+		protocol_bin.setValue(a, 8);
 	}
 	public void setSIP(String s) {
-		s_ip = s;
+		source_ipaddress_dec = s;
 	}
 	public void setDIP(String s) {
-		d_ip = s;
+		destination_ipaddress_dec = s;
 	}
 
 	public void setHeader() {
@@ -77,21 +95,18 @@ public class IPv4_Header {
 			for (int i = 0; i < 11; i++) {
 				System.out.print(input_text[i]);
 				header.add(bReader.readLine());
-				if (header.size() == 11) {
-					this.setVersion(Integer.parseInt(header.get(0)));
-					this.setIHL(Integer.parseInt(header.get(1)));
-					//ihl = Integer.parseInt(header.get(1)) * 0,25; // convert input bytes to bit and then divide by 32 (ihl*8/32)
-					this.setTOS(Integer.parseInt(header.get(2)));
-					this.setTotalLength(Integer.parseInt(header.get(3)));
-					this.setID(Integer.parseInt(header.get(4)));
-					this.setFlag(header.get(5));
-					this.setFragmentOffset(Integer.parseInt(header.get(6)));
-					this.setTTL(Integer.parseInt(header.get(7)));
-					this.setProtocol(Integer.parseInt(header.get(8)));
-					this.setSIP(header.get(9));
-					this.setDIP(header.get(10));
-				}
 			}
+			this.setVersion(Integer.parseInt(header.get(0)));
+			this.setIHL(Integer.parseInt(header.get(1)));
+			this.setTOS(Integer.parseInt(header.get(2)));
+			this.setTotalLength(Integer.parseInt(header.get(3)));
+			this.setID(Integer.parseInt(header.get(4)));
+			this.setFlag(header.get(5));
+			this.setFragmentOffset(Integer.parseInt(header.get(6)));
+			this.setTTL(Integer.parseInt(header.get(7)));
+			this.setProtocol(Integer.parseInt(header.get(8)));
+			this.setSIP(header.get(9));
+			this.setDIP(header.get(10));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -110,12 +125,7 @@ public class IPv4_Header {
 		}
 		System.out.println("\n"	+ "Header information:\n" + output);
 	}
-	public String leadingZero(String s, int b) {
-		while (s.length() < b) {
-			s = '0' + s;
-		}
-		return s;
-	}
+
 	public String arrayListToString(ArrayList<String> array) {
 		String out = "";
 		for (int i = 0; i < array.size(); i++) {
@@ -127,35 +137,35 @@ public class IPv4_Header {
 		return out;
 	}
 	public void toBinary() {
-		b_header.add(leadingZero(Integer.toBinaryString(version), 4));
-		b_header.add(leadingZero(Integer.toBinaryString(ihl), 4));
-		b_header.add(leadingZero(Integer.toBinaryString(tos), 8));
+		b_header.add(version_bin.getValue());
+		b_header.add(ihl_bin.getValue());
+		b_header.add(tos_bin.getValue());
 		// TEST: print the first 16 bit;
 		String test = b_header.get(0).toString() + b_header.get(1).toString() + b_header.get(2).toString();
 		int dec = Integer.parseInt(test, 2);
 		String hex = Integer.toString(dec, 16);
 		System.out.println(hex);
 		// TEST end
-		b_header.add(leadingZero(Integer.toBinaryString(total_length),16));
-		b_header.add(leadingZero(Integer.toBinaryString(id), 16));
-		b_header.add(flag);
-		b_header.add(leadingZero(Integer.toBinaryString(fragment_offset), 13));
-		b_header.add(leadingZero(Integer.toBinaryString(ttl), 8));
-		b_header.add(leadingZero(Integer.toBinaryString(protocol), 8));
+		b_header.add(total_length_bin.getValue());
+		b_header.add(id_bin.getValue());
+		b_header.add(flag.getValue());
+		b_header.add(fragment_offset_bin.getValue());
+		b_header.add(ttl_bin.getValue());
+		b_header.add(protocol_bin.getValue());
 
 		// source IP address to binary
-		String[] sip_temp = s_ip.split("\\."); // splits the ip address per "." and returns an array
+		String[] sip_temp = source_ipaddress_dec.split("\\."); // splits the ip address per "." and returns an array
 		String b_sip = ""; // binary string
 		for (int i = 0; i < sip_temp.length; i++) {
-			String x = leadingZero(Integer.toBinaryString(Integer.parseInt(sip_temp[i])), 8);
+			String x = Integer.toBinaryString(Integer.parseInt(sip_temp[i]));
 			b_sip = b_sip + x;
 		}
 		b_header.add(b_sip);
 		// destination IP address to binary
-		String[] tip_temp = d_ip.split("\\.");
+		String[] tip_temp = destination_ipaddress_dec.split("\\.");
 		String b_tip= "";
 		for (int i = 0; i < tip_temp.length; i++) {
-			String x = leadingZero(Integer.toBinaryString(Integer.parseInt(tip_temp[i])), 8);
+			String x = Integer.toBinaryString(Integer.parseInt(tip_temp[i]));
 			b_tip = b_tip + x;
 		}
 		b_header.add(b_tip);
