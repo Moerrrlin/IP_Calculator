@@ -18,10 +18,12 @@ public class IPv4_Header {
 	}
 
 	public void setVersion(int version) {
-		if (version == 4 || version == 6)
+		if (version == 4 || version == 6) {
 			this.version = version;
-		else
+		}	
+		else {
 			throw new RuntimeException("Nur 4 oder 6 gültig");
+		}
 	}
 
 	public void setVersion(String input) {
@@ -34,7 +36,16 @@ public class IPv4_Header {
 	}
 
 	public void setIhl(int ihl) {
-		this.ihl = ihl;
+		if (ihl >= 5 && ihl <= 15) { // IHL is only allowed between 5 (20 bytes) and 15 (60 bytes)
+			this.ihl = ihl;
+		} else {
+			throw new RuntimeException("Wert ist außerhalb der gültigen Headersize.\n");
+		}
+	}
+	
+	public void setIhl(String input) {
+		int ihl = Integer.parseInt(input);
+		setIhl(ihl);
 	}
 
 	public int getTos() {

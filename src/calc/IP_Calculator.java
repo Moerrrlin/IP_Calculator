@@ -11,6 +11,8 @@ public class IP_Calculator {
 		
 		valD.setVersion();
 		
+		valD.setIhl();
+		
 		/*
 		header.setHeader(); // set the header via user input
 
