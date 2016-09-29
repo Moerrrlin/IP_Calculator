@@ -169,8 +169,6 @@ public class IPv4_Header {
 		b_header.add(source_ip_bin.getValue());
 		b_header.add(destination_ip_bin.getValue());
 
-		System.out.println("\n"
-				+ "binary header information:"
-				+ arrayListToString(b_header));
+		System.out.println("\n"	+ "Binary Header information:\n" + arrayListToString(b_header));
 	}
 }
