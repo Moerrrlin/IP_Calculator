@@ -25,10 +25,10 @@ public class IPv4_Header {
 	private Binary ttl_bin = new Binary();;
 	private int protocol_dec;
 	private Binary protocol_bin = new Binary();;
-	private String source_ipaddress_dec; // source IP address
-	private Binary source_ipaddress_bin = new Binary();;
-	private String destination_ipaddress_dec; // destination IP address
-	private Binary destination_ipaddress_bin = new Binary();;
+	private String source_ip_dec; // source IP address
+	private Binary source_ip_bin = new Binary();;
+	private String destination_ip_dec; // destination IP address
+	private Binary destination_ip_bin = new Binary();;
 
 	String[] input_text = {
 			"Version: ",
@@ -83,10 +83,24 @@ public class IPv4_Header {
 		protocol_bin.setValue(a, 8);
 	}
 	public void setSIP(String s) {
-		source_ipaddress_dec = s;
+		source_ip_dec = s;
+		String[] temp = s.split("\\."); // splits the ip address per "." and returns an array
+		String binary = ""; // binary string
+		for (int i = 0; i < temp.length; i++) {
+			String x = Integer.toBinaryString(Integer.parseInt(temp[i]));
+			binary = binary + x;
+		}
+		source_ip_bin.setValue(binary, 24);
 	}
 	public void setDIP(String s) {
-		destination_ipaddress_dec = s;
+		destination_ip_dec = s;
+		String[] temp = s.split("\\."); // splits the ip address per "." and returns an array
+		String binary = ""; // binary string
+		for (int i = 0; i < temp.length; i++) {
+			String x = Integer.toBinaryString(Integer.parseInt(temp[i]));
+			binary = binary + x;
+		}
+		destination_ip_bin.setValue(binary, 24);
 	}
 
 	public void setHeader() {
@@ -152,23 +166,8 @@ public class IPv4_Header {
 		b_header.add(fragment_offset_bin.getValue());
 		b_header.add(ttl_bin.getValue());
 		b_header.add(protocol_bin.getValue());
-
-		// source IP address to binary
-		String[] sip_temp = source_ipaddress_dec.split("\\."); // splits the ip address per "." and returns an array
-		String b_sip = ""; // binary string
-		for (int i = 0; i < sip_temp.length; i++) {
-			String x = Integer.toBinaryString(Integer.parseInt(sip_temp[i]));
-			b_sip = b_sip + x;
-		}
-		b_header.add(b_sip);
-		// destination IP address to binary
-		String[] tip_temp = destination_ipaddress_dec.split("\\.");
-		String b_tip= "";
-		for (int i = 0; i < tip_temp.length; i++) {
-			String x = Integer.toBinaryString(Integer.parseInt(tip_temp[i]));
-			b_tip = b_tip + x;
-		}
-		b_header.add(b_tip);
+		b_header.add(source_ip_bin.getValue());
+		b_header.add(destination_ip_bin.getValue());
 
 		System.out.println("\n"
 				+ "binary header information:"
