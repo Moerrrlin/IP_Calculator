@@ -125,7 +125,7 @@ public class IPv4_Header {
 			e.printStackTrace();
 		}
 	}
-	public void printStr() {
+	public void printDecimal() {
 		String output = "";
 		char seperator = '-';
 		int i = 0;
@@ -139,18 +139,7 @@ public class IPv4_Header {
 		}
 		System.out.println("\n"	+ "Header information:\n" + output);
 	}
-
-	public String arrayListToString(ArrayList<String> array) {
-		String out = "";
-		for (int i = 0; i < array.size(); i++) {
-			out += array.get(i);
-			if(i != (array.size() - 1)) {
-				out += " ";
-			}
-		}
-		return out;
-	}
-	public void toBinary() {
+	public void printBinary() {
 		b_header.add(version_bin.getValue());
 		b_header.add(ihl_bin.getValue());
 		b_header.add(tos_bin.getValue());
@@ -169,6 +158,14 @@ public class IPv4_Header {
 		b_header.add(source_ip_bin.getValue());
 		b_header.add(destination_ip_bin.getValue());
 
-		System.out.println("\n"	+ "Binary Header information:\n" + arrayListToString(b_header));
+		String output = "";
+		for (int i = 0; i < b_header.size(); i++) {
+			output += b_header.get(i);
+			if(i != (b_header.size() - 1)) {
+				output += " ";
+			}
+		}
+
+		System.out.println("\n"	+ "Binary Header information:\n" + output);
 	}
 }
