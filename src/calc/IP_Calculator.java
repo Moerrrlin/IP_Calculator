@@ -3,7 +3,7 @@ package calc;
 public class IP_Calculator {
 
 	public static void main(String[] args) {
-		IPv4_Header header = new IPv4_Header();
+		Deprecated_IPv4_Header header = new Deprecated_IPv4_Header();
 
 		header.setHeader(); // set the header via user input
 

@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class IPv4_Header {
-	//TODO: (1) add IP header checksum and computing logic
-	//TODO: (2) add input integrity checks
+@Deprecated
+public class Deprecated_IPv4_Header {
+	
+	// TODO: (1) add IP header checksum and computing logic
+	// TODO: (2) add input integrity checks
 	private int version_dec;
 	private Binary version_bin = new Binary();
 	private int ihl_dec; // IP header length
@@ -30,19 +32,9 @@ public class IPv4_Header {
 	private String destination_ip_dec; // destination IP address
 	private Binary destination_ip_bin = new Binary();;
 
-	String[] input_text = {
-			"Version: ",
-			"IP Header Length (IHL): ",
-			"type of service (TOS): ",
-			"total length: ",
-			"ID: ",
-			"flag: ",
-			"fragment-offset: ",
-			"time-to-live (TTL): ",
-			"protocol: ",
-			"source IP adress: ",
-			"target IP adress: "
-	};
+	String[] input_text = { "Version: ", "IP Header Length (IHL): ", "type of service (TOS): ", "total length: ",
+			"ID: ", "flag: ", "fragment-offset: ", "time-to-live (TTL): ", "protocol: ", "source IP adress: ",
+			"target IP adress: " };
 
 	private ArrayList<String> header = new ArrayList<String>();
 	private ArrayList<String> b_header = new ArrayList<String>();
@@ -51,50 +43,80 @@ public class IPv4_Header {
 		version_dec = a;
 		version_bin.setValue(a, 4);
 	}
+
 	public void setIHL(int a) {
 		ihl_dec = a;
 		ihl_bin.setValue(a, 4);
 	}
+
 	public void setTOS(int a) {
 		tos_dec = a;
 		tos_bin.setValue(a, 8);
 	}
+
 	public void setTotalLength(int a) {
 		total_length_dec = a;
 		total_length_bin.setValue(a, 16);
 	}
+
 	public void setID(int a) {
 		id_dec = a;
 		id_bin.setValue(a, 16);
 	}
+
 	public void setFlag(String s) {
 		flag.setValue(s, 3);
 	}
+
 	public void setFragmentOffset(int a) {
 		fragment_offset_dec = a;
 		fragment_offset_bin.setValue(a, 13);
 	}
+
 	public void setTTL(int a) {
 		ttl_dec = a;
 		ttl_bin.setValue(a, 8);
 	}
+
 	public void setProtocol(int a) {
 		protocol_dec = a;
 		protocol_bin.setValue(a, 8);
 	}
+
+	private boolean validateIP(String[] temp) {
+		try {
+			for (String ip_block : temp) {
+				int value = Integer.parseInt(ip_block);
+				if (value < 0 || value > 255) {
+					throw new IOException("Die IP Adresse befindet sich auﬂerhalb des zugelassenen Nummernkreises.");
+				}
+			}
+			return true;
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
 	public void setSIP(String s) {
 		source_ip_dec = s;
-		String[] temp = s.split("\\."); // splits the ip address per "." and returns an array
+		String[] temp = s.split("\\."); // splits the ip address per "." and
+										// returns an array
 		String binary = ""; // binary string
+
+		validateIP(temp);
+
 		for (int i = 0; i < temp.length; i++) {
 			String x = Integer.toBinaryString(Integer.parseInt(temp[i]));
 			binary = binary + x;
 		}
 		source_ip_bin.setValue(binary, 24);
 	}
+
 	public void setDIP(String s) {
 		destination_ip_dec = s;
-		String[] temp = s.split("\\."); // splits the ip address per "." and returns an array
+		String[] temp = s.split("\\."); // splits the ip address per "." and
+										// returns an array
 		String binary = ""; // binary string
 		for (int i = 0; i < temp.length; i++) {
 			String x = Integer.toBinaryString(Integer.parseInt(temp[i]));
@@ -104,50 +126,65 @@ public class IPv4_Header {
 	}
 
 	public void setHeader() {
-		BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			for (int i = 0; i < 11; i++) {
-				System.out.print(input_text[i]);
-				header.add(bReader.readLine());
+			BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				for (int i = 0; i < 11; i++) {
+					System.out.print(input_text[i]);
+					header.add(bReader.readLine());
+				}
+				this.setVersion(Integer.parseInt(header.get(0)));
+				this.setIHL(Integer.parseInt(header.get(1)));
+				this.setTOS(Integer.parseInt(header.get(2)));
+				this.setTotalLength(Integer.parseInt(header.get(3)));
+				this.setID(Integer.parseInt(header.get(4)));
+				this.setFlag(header.get(5));
+				this.setFragmentOffset(Integer.parseInt(header.get(6)));
+				this.setTTL(Integer.parseInt(header.get(7)));
+				this.setProtocol(Integer.parseInt(header.get(8)));
+				this.setSIP(header.get(9));
+				this.setDIP(header.get(10));
+			} catch (IOException e) {
+				
+				boolean valid = false;
+				do {
+					System.out.println("EIngabe war falsch");
+					try {
+						BufferedReader newInput = new BufferedReader(new InputStreamReader(System.in));
+						setSIP(newInput.readLine());
+						valid = true;
+					} catch (Exception e2) {
+						valid = false;
+					}
+					
+				} while (!valid);
 			}
-			this.setVersion(Integer.parseInt(header.get(0)));
-			this.setIHL(Integer.parseInt(header.get(1)));
-			this.setTOS(Integer.parseInt(header.get(2)));
-			this.setTotalLength(Integer.parseInt(header.get(3)));
-			this.setID(Integer.parseInt(header.get(4)));
-			this.setFlag(header.get(5));
-			this.setFragmentOffset(Integer.parseInt(header.get(6)));
-			this.setTTL(Integer.parseInt(header.get(7)));
-			this.setProtocol(Integer.parseInt(header.get(8)));
-			this.setSIP(header.get(9));
-			this.setDIP(header.get(10));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
+
 	public void printDecimal() {
 		String output = "";
 		char seperator = '-';
 		int i = 0;
 		for (String string : header) {
-			if (i < header.size()-1) {
+			if (i < header.size() - 1) {
 				output = output + string + seperator;
 				i++;
 			} else {
 				output = output + string;
 			}
 		}
-		System.out.println("\n"	+ "Header information:\n" + output);
+		System.out.println("\n" + "Header information:\n" + output);
 	}
+
 	public void printBinary() {
 		b_header.add(version_bin.getValue());
 		b_header.add(ihl_bin.getValue());
 		b_header.add(tos_bin.getValue());
 		// TEST: print the first 16 bit;
-		String test = b_header.get(0).toString() + b_header.get(1).toString() + b_header.get(2).toString();
-		int dec = Integer.parseInt(test, 2);
-		String hex = Integer.toString(dec, 16);
-		System.out.println(hex);
+		/*
+		 * String test = b_header.get(0).toString() + b_header.get(1).toString()
+		 * + b_header.get(2).toString(); int dec = Integer.parseInt(test, 2);
+		 * String hex = Integer.toString(dec, 16); System.out.println(hex);
+		 */
 		// TEST end
 		b_header.add(total_length_bin.getValue());
 		b_header.add(id_bin.getValue());
@@ -161,11 +198,11 @@ public class IPv4_Header {
 		String output = "";
 		for (int i = 0; i < b_header.size(); i++) {
 			output += b_header.get(i);
-			if(i != (b_header.size() - 1)) {
+			if (i != (b_header.size() - 1)) {
 				output += " ";
 			}
 		}
 
-		System.out.println("\n"	+ "Binary Header information:\n" + output);
+		System.out.println("\n" + "Binary Header information:\n" + output);
 	}
 }
