@@ -42,6 +42,23 @@ public class Validator {
 		} while (!valid);
 	}
 	
+	public void setTos() {
+		boolean valid = false;
+		// TODO: add all allowed TOS
+		int[] allowedTOS = {
+				0, 1
+		};
+		do {
+			try {
+				int tos = fetchNumberInput("TOS:");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		} while (!valid);
+	}
+	
+	// TODO: add remaining Setters
+	
 	private String fetchUserInput(String message) {
 		String input = "";
 		System.out.println(message);

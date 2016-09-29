@@ -55,6 +55,10 @@ public class IPv4_Header {
 	public void setTos(int tos) {
 		this.tos = tos;
 	}
+	public void setTos(String input) {
+		int tos = Integer.parseInt(input);
+		setTos(tos);
+	}
 
 	public int getTotal_length() {
 		return total_length;
