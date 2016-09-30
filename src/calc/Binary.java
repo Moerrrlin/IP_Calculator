@@ -28,13 +28,13 @@ public class Binary {
 		}
 		return s;
 	}
-    public void Binary() {
+    public Binary() {
         value = "0";
     }
-    public void Binary(String s) {
+    public Binary(String s) {
         value = s;
     }
-    public void Binary(int i){
+    public Binary(int i){
         value = Integer.toBinaryString(i);
     }
 }

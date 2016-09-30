@@ -51,14 +51,23 @@ public class Validator {
 		do {
 			try {
 				int tos = fetchNumberInput("TOS:");
+				for (int i : allowedTOS) {
+					if (i == tos) {
+						valid = true;
+					} else {
+						throw new RuntimeException("Die Eingabe ist kein gültiger Type of Service.\n");
+					}
+				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				System.out.println(e.getMessage());
 			}
 		} while (!valid);
 	}
-	
-	// TODO: add remaining Setters
-	
+		/** 
+		 * TODO: add remaining Setters 
+		 * (ID , Flag, fragment_offset , ttl, protocol,source_ip, destination_ip) 
+		 */
+		
 	private String fetchUserInput(String message) {
 		String input = "";
 		System.out.println(message);

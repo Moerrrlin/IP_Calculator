@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 @Deprecated
+@SuppressWarnings(value = { "all" })
 public class Deprecated_IPv4_Header {
-	
 	// TODO: (1) add IP header checksum and computing logic
 	// TODO: (2) add input integrity checks
 	private int version_dec;
