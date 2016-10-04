@@ -44,9 +44,8 @@ public class Validator {
 	
 	public void setTos() {
 		boolean valid = false;
-		// TODO: add all allowed TOS
 		int[] allowedTOS = {
-				0, 1
+			0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
 		};
 		do {
 			try {
