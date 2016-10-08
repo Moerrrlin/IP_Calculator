@@ -31,11 +31,12 @@ public class Validator {
 				int mod = ((ihl_byte * 8) % 32);
 				if (mod == 0) {
 					ihl = ((ihl_byte * 8) / 32);
+					header.setIhl(ihl);
+					valid = true;
 				} else {
 					throw new RuntimeException("Der IHL muss ein Vielfaches von 32bit sein.\n");
 				}
-				header.setIhl(ihl);
-				valid = true;
+				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -52,6 +53,7 @@ public class Validator {
 				int tos = fetchNumberInput("TOS:");
 				for (int i : allowedTOS) {
 					if (i == tos) {
+						header.setTos(tos);
 						valid = true;
 					} else {
 						throw new RuntimeException("Die Eingabe ist kein gültiger Type of Service.\n");
@@ -62,9 +64,23 @@ public class Validator {
 			}
 		} while (!valid);
 	}
+	
+	public void setID() {
+		boolean valid = false;
+		do {
+			try {
+				int id = fetchNumberInput("ID:");
+				header.setId(id);
+				valid = true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
+	
 		/** 
 		 * TODO: add remaining Setters 
-		 * (ID , Flag, fragment_offset , ttl, protocol,source_ip, destination_ip) 
+		 * (Flag, fragment_offset , ttl, protocol,source_ip, destination_ip) 
 		 */
 		
 	private String fetchUserInput(String message) {

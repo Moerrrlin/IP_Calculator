@@ -13,6 +13,10 @@ public class IP_Calculator {
 		
 		valD.setIhl();
 		
+		valD.setTos();
+		
+		valD.setID();
+		
 		/*
 		header.setHeader(); // set the header via user input
 
