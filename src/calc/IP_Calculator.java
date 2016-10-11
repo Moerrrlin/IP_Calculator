@@ -21,6 +21,8 @@ public class IP_Calculator {
 		
 		valD.setTtl();
 		
+		valD.setProtocol();
+		
 		/*
 		header.setHeader(); // set the header via user input
 

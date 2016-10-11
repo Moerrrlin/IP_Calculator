@@ -122,9 +122,29 @@ public class Validator {
 		} while (!valid);
 	}
 	
+	public void setProtocol() {
+		boolean valid = false;
+		do {
+			try {
+				int protocol = fetchNumberInput("Protocol:");
+				// TODO: add protocol validation
+				/*
+				if (protocol) {
+					header.setTtl(protocol);
+					valid = true;
+				} else {
+					throw new RuntimeException("Ungültiges Protokoll.\n");
+				}
+				*/
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
+	
 	/** 
 	 * TODO: add remaining Setters 
-	 * (protocol,source_ip, destination_ip) 
+	 * (source_ip, destination_ip) 
 	 */
 		
 	private String fetchUserInput(String message) {
