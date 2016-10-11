@@ -96,6 +96,11 @@ public class IPv4_Header {
 	public void setFragment_offset(int fragment_offset) {
 		this.fragment_offset = fragment_offset;
 	}
+	
+	public void setFragment_offset(String input) {
+		int offset = Integer.parseInt(input);
+		setFragment_offset(offset);
+	}
 
 	public int getTtl() {
 		return ttl;
@@ -103,6 +108,11 @@ public class IPv4_Header {
 
 	public void setTtl(int ttl) {
 		this.ttl = ttl;
+	}
+	
+	public void setTtl(String input) {
+		int ttl = Integer.parseInt(input);
+		setTtl(ttl);
 	}
 
 	public int getProtocol() {

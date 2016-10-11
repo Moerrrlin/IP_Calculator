@@ -16,6 +16,10 @@ public class IP_Calculator {
 		valD.setTos();
 		
 		valD.setID();
+
+		valD.setFragment_offset();
+		
+		valD.setTtl();
 		
 		/*
 		header.setHeader(); // set the header via user input

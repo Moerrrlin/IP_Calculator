@@ -78,10 +78,54 @@ public class Validator {
 		} while (!valid);
 	}
 	
-		/** 
-		 * TODO: add remaining Setters 
-		 * (Flag, fragment_offset , ttl, protocol,source_ip, destination_ip) 
-		 */
+	public void setFlag() {
+	// TODO: add validation of 3 bit flag
+		boolean valid = false;
+		do {
+			try {
+				String flag = fetchUserInput("Flag:");
+				header.setFlag(flag);
+				valid = true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
+	
+	public void setFragment_offset() {
+		boolean valid = false;
+		do {
+			try {
+				int offset = fetchNumberInput("Offset:");
+				header.setFragment_offset(offset);
+				valid = true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
+	
+	public void setTtl() {
+		boolean valid = false;
+		do {
+			try {
+				int ttl = fetchNumberInput("TTL:");
+				if (ttl > 0) {
+					header.setTtl(ttl);
+					valid = true;
+				} else {
+					throw new RuntimeException("Das Paket ist abgelaufen und wird verworfen.\n");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
+	
+	/** 
+	 * TODO: add remaining Setters 
+	 * (protocol,source_ip, destination_ip) 
+	 */
 		
 	private String fetchUserInput(String message) {
 		String input = "";
