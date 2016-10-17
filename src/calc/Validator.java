@@ -3,6 +3,8 @@ package calc;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import javax.xml.transform.Source;
+
 public class Validator {
 	private IPv4_Header header = null;
 	
@@ -142,10 +144,59 @@ public class Validator {
 		} while (!valid);
 	}
 	
-	/** 
-	 * TODO: add remaining Setters 
-	 * (source_ip, destination_ip) 
-	 */
+	
+	public void setSourceIp() {
+		boolean valid = false;
+		do {
+			try {
+				String source_ip = fetchUserInput("Source IP adress (ex.: 192.168.1.2):");
+				
+				String[] ip_parts = source_ip.split("\\.");
+				if (ip_parts.length < 1 && ip_parts.length > 4) {
+					throw new RuntimeException("Invalid length of IP adress!\n");
+				}
+				for (String string : ip_parts) {
+					int ip_part = Integer.parseInt(string);
+					if (ip_part > 255) {
+						throw new RuntimeException("Invalid IP adress!\n");
+					}
+				}
+				header.setSource_ip(source_ip);
+				valid = true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
+	
+	public void setDestinationIp() {
+		boolean valid = false;
+		do {
+			try {
+				String destination_ip = fetchUserInput("Enter destination IP adress (ex.: 192.168.1.4):");
+				if (destination_ip.contains(".")) {
+					String[] ip_parts = destination_ip.split("\\.");
+					if (ip_parts.length < 1 && ip_parts.length > 4) {
+						throw new RuntimeException("Invalid length of IP adress!\n");
+					}
+					for (String string : ip_parts) {
+						int ip_part = Integer.parseInt(string);
+						if (ip_part > 255) {
+							throw new RuntimeException("Invalid IP adress!\n");
+						}
+					}
+					header.setDestination_ip(destination_ip);
+					valid = true;
+				} else {
+					throw new RuntimeException("Please use a separator for your input.");
+				}
+			} catch (NumberFormatException nfe) {
+				System.out.println("Please enter valid numbers for the ip adress.");
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
 		
 	private String fetchUserInput(String message) {
 		String input = "";

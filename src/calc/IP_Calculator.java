@@ -9,20 +9,24 @@ public class IP_Calculator {
 
 		Validator valD = new Validator(header);
 		
-		valD.setVersion();
+//		valD.setVersion();
+//		
+//		valD.setIhl();
+//		
+//		valD.setTos();
+//		
+//		valD.setID();
+//
+//		valD.setFragment_offset();
+//		
+//		valD.setTtl();
+//		
+//		valD.setProtocol();
+//		
+//		valD.setSourceIp();
 		
-		valD.setIhl();
-		
-		valD.setTos();
-		
-		valD.setID();
-
-		valD.setFragment_offset();
-		
-		valD.setTtl();
-		
-		valD.setProtocol();
-		
+		valD.setDestinationIp();
+		header.getDestination_ip();
 		/*
 		header.setHeader(); // set the header via user input
 
