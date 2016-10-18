@@ -3,8 +3,6 @@ package calc;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import javax.xml.transform.Source;
-
 public class Validator {
 	private IPv4_Header header = null;
 	
@@ -129,15 +127,19 @@ public class Validator {
 		do {
 			try {
 				int protocol = fetchNumberInput("Protocol:");
-				// TODO: add protocol validation
-				/*
-				if (protocol) {
-					header.setTtl(protocol);
+				/* validates against IANA Assigned Internet Protocol Numbers
+				 * 0 - 142: valid
+				 * 143-252: unassigned
+				 * 253 + 254: Use for experimentation and testing
+				 * 255: reserved
+				 */
+				if (protocol >= 0 & protocol <= 142) {
+					header.setProtocol(protocol);
 					valid = true;
 				} else {
-					throw new RuntimeException("Ungültiges Protokoll.\n");
+					throw new RuntimeException("Invalid protocol number. ".concat(
+						"Please refer to http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml \n"));
 				}
-				*/
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
