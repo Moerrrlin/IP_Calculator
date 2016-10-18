@@ -8,18 +8,18 @@ public class IP_Calculator {
 		Scanner menu = new Scanner(System.in);
 		// arbitrary option menu
 		System.out.println(
-				"*******************************\n".concat(
-				"*                             *\n").concat(		
-				"*       IPv4 Calculator       *\n").concat(
-				"*                             *\n").concat(
-				"*******************************\n").concat(
-				"*           Options           *\n").concat(
-				"* (1) decimal input to binary *\n").concat(
-				"*                             *\n").concat(
-				"* (2) binary input to decimal *\n").concat(		
-				"*******************************\n")
-		);
-		
+				"*******************************\n" +
+				"*                             *\n" +		
+				"*       IPv4 Calculator       *\n" +
+				"*                             *\n" +
+				"*******************************\n" +
+				"*           Options           *\n" +
+				"* (1) decimal input to binary *\n" +
+				"*                             *\n" +
+				"* (2) binary input to decimal *\n" +		
+				"*******************************\n");
+		System.out.print("Enter option: ");
+				
 		int option = menu.nextInt();
 		if (option == 1){
 				menu.close();

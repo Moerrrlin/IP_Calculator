@@ -200,7 +200,7 @@ public class Validator {
 				}
 				for (String string : ip_parts) {
 					int ip_part = Integer.parseInt(string);
-					if (ip_part < 0 || ip_part > 255) {
+					if (ip_part >= 0 || ip_part <= 255) {
 						throw new RuntimeException("Invalid IP adress!\n");
 					}
 				}
@@ -224,7 +224,7 @@ public class Validator {
 					}
 					for (String string : ip_parts) {
 						int ip_part = Integer.parseInt(string);
-						if (ip_part < 0 || ip_part > 255) {
+						if (ip_part >= 0 || ip_part <= 255) {
 							throw new RuntimeException("Invalid IP adress!\n");
 						}
 					}
