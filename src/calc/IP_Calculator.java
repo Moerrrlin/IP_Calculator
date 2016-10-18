@@ -16,6 +16,8 @@ public class IP_Calculator {
 		valD.setTos();
 		
 		valD.setID();
+		
+		valD.setFlag();
 
 		valD.setFragment_offset();
 		

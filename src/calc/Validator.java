@@ -1,7 +1,10 @@
 package calc;
 
+import static java.util.Arrays.asList;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class Validator {
 	private IPv4_Header header = null;
@@ -13,9 +16,13 @@ public class Validator {
 		boolean valid = false;
 		do {
 			try {
-				int number = fetchNumberInput("Version:");
-				header.setVersion(number);
-				valid = true;
+				int version = fetchNumberInput("Version:");
+				if (version == 4 || version == 6) {
+					header.setVersion(version);
+					valid = true;
+				} else {
+					throw new RuntimeException("Invalid version type.\n");
+				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -26,39 +33,61 @@ public class Validator {
 		boolean valid = false;
 		do {
 			try {
-				int ihl_byte = fetchNumberInput("IHL in Byte:");
+				int ihl_byte = fetchNumberInput("IHL in byte:");
 				int ihl = 0;
 				int mod = ((ihl_byte * 8) % 32);
 				if (mod == 0) {
 					ihl = ((ihl_byte * 8) / 32);
-					header.setIhl(ihl);
-					valid = true;
+					if (ihl >= 5 && ihl <= 15) { // minimum IHL is 5 (20 bytes); maximum 15 (60 bytes)
+						header.setIhl(ihl);
+						valid = true;
+					} else {
+						throw new RuntimeException("Value is outside of header size range.\n");
+					}
 				} else {
-					throw new RuntimeException("Der IHL muss ein Vielfaches von 32bit sein.\n");
+					throw new RuntimeException("The IHL is required to be a multiple of 32bit.\n");
 				}
-				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 		} while (!valid);
 	}
 	
+	/**
+	 * 
+	 */
 	public void setTos() {
 		boolean valid = false;
-		int[] allowedTOS = {
+//		int[] allowedTOS = {
+//			0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
+//		};
+		final List<Integer> allowedTOS = asList(
 			0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
-		};
+		);
 		do {
 			try {
 				int tos = fetchNumberInput("TOS:");
-				for (int i : allowedTOS) {
-					if (i == tos) {
-						header.setTos(tos);
-						valid = true;
-					} else {
-						throw new RuntimeException("Die Eingabe ist kein gültiger Type of Service.\n");
-					}
+				
+				/*
+			  	for (int i : allowedTOS) {
+				  if (i == tos) {
+				  	header.setTos(tos);
+				  	valid = true;
+				  	break;
+				  	}
 				}
+				  
+				if (!valid) {
+					throw new Exception("Please enter a valid type of service.\n");
+				}
+				*/
+			
+				if (allowedTOS.contains(tos)) {
+					header.setTos(tos);
+					valid = true;
+				} else
+					throw new RuntimeException("Please enter a valid type of service.\n");
+			
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -79,13 +108,25 @@ public class Validator {
 	}
 	
 	public void setFlag() {
-	// TODO: add validation of 3 bit flag
+		// 3 bit value; first bit is reserved for future use 
+		final List<String> validFlags = asList(
+				// "More Fragment" bit; if set, it represents a fragmented IP datagram that has more fragments after it
+				"100", 
+				// "Don't Fragment" bit;
+				"010",
+				// "Last Fragment" flag; 3rd bit is not set signaling the last fragment of a particular IP datagram
+				"000"
+		);
 		boolean valid = false;
 		do {
 			try {
 				String flag = fetchUserInput("Flag:");
-				header.setFlag(flag);
-				valid = true;
+				if (validFlags.contains(flag)) {
+					header.setFlag(flag);
+					valid = true;
+				} else {
+					throw new Exception("Invalid flag input. \n");
+				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -114,7 +155,7 @@ public class Validator {
 					header.setTtl(ttl);
 					valid = true;
 				} else {
-					throw new RuntimeException("Das Paket ist abgelaufen und wird verworfen.\n");
+					throw new RuntimeException("The packet is expired and will be discarded.\n");
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -137,7 +178,7 @@ public class Validator {
 					header.setProtocol(protocol);
 					valid = true;
 				} else {
-					throw new RuntimeException("Invalid protocol number. ".concat(
+					throw new RuntimeException("Invalid protocol number.\r".concat(
 						"Please refer to http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml \n"));
 				}
 			} catch (Exception e) {
@@ -190,10 +231,10 @@ public class Validator {
 					header.setDestination_ip(destination_ip);
 					valid = true;
 				} else {
-					throw new RuntimeException("Please use a separator for your input.");
+					throw new RuntimeException("Please format your input appropriately.\n");
 				}
 			} catch (NumberFormatException nfe) {
-				System.out.println("Please enter valid numbers for the ip adress.");
+				System.out.println("Please enter valid numbers for the ip adress.\n");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -219,7 +260,7 @@ public class Validator {
 				number = Integer.parseInt(fetchUserInput(message));
 				
 			} catch (Exception e) {
-				System.out.println("Keine gültige Zahl eingegeben.");
+				System.out.println("Please enter a valid number.\n");
 			}
 		} while (number == null);
 		return number;
