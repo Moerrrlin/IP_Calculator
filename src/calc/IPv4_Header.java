@@ -129,5 +129,25 @@ public class IPv4_Header {
 	public void setDestination_ip(String destination_ip) {
 		this.destination_ip = destination_ip;
 	}
-
+	
+	public void print() {
+		System.out.println("\n" + "Header information:\n" + toString());
+	}
+	
+	public void toBinary() {
+		// TODO: binary conversion
+		Binary bHeader = new Binary();
+		bHeader.toBinary(this);
+	}
+	
+	@Override
+	public String toString() {
+		char seperator = '-';
+		String output = Integer.toString(version) + seperator + Integer.toString(ihl) + seperator
+				+ Integer.toString(tos) + seperator + Integer.toString(total_length) + seperator + Integer.toString(id) 
+				+ seperator + flag + seperator + Integer.toString(fragment_offset) + seperator + Integer.toString(ttl)
+				+ seperator + Integer.toString(protocol) + seperator // + Integer.toString(checksum)
+				+ seperator + source_ip + seperator + destination_ip;
+		return output;
+	}
 }

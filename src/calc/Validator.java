@@ -111,7 +111,7 @@ public class Validator {
 		// 3 bit value; first bit is reserved for future use 
 		final List<String> validFlags = asList(
 				// "More Fragment" bit; if set, it represents a fragmented IP datagram that has more fragments after it
-				"100", 
+				"001", 
 				// "Don't Fragment" bit;
 				"010",
 				// "Last Fragment" flag; 3rd bit is not set signaling the last fragment of a particular IP datagram
@@ -187,7 +187,8 @@ public class Validator {
 		} while (!valid);
 	}
 	
-	
+	//TODO: add header checksum field + logic
+
 	public void setSourceIp() {
 		boolean valid = false;
 		do {

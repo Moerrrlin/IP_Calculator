@@ -42,10 +42,16 @@ public class IP_Calculator {
 				valD.setTtl();
 				
 				valD.setProtocol();
+
+//				valD.setChecksum();
 				
 				valD.setSourceIp();
 				
 				valD.setDestinationIp();
+				
+//				header.print();
+//				header.toBinary();
+				
 		} else if (option == 2) {
 			menu.close();
 			Binary header = new Binary();
