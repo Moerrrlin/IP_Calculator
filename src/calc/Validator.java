@@ -61,7 +61,7 @@ public class Validator {
 //		int[] allowedTOS = {
 //			0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
 //		};
-		final List<Integer> allowedTOS = asList(
+		final List<Integer> validTOS = asList(
 			0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
 		);
 		do {
@@ -82,7 +82,7 @@ public class Validator {
 				}
 				*/
 			
-				if (allowedTOS.contains(tos)) {
+				if (validTOS.contains(tos)) {
 					header.setTos(tos);
 					valid = true;
 				} else
