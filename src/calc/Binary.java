@@ -22,6 +22,7 @@ public class Binary {
         }
         return true;
     }
+    
     public String leadingZero(String s, int length) {
 		while (s.length() < length) {
 			s = '0' + s;
@@ -38,16 +39,23 @@ public class Binary {
     }
     
     public void toBinary(IPv4_Header header) {
-    	// FIXME
-    	// TODO how to do this properly
-    	String[] ipPartsSourceIP = header.getSource_ip().split("\\.");
+    	String[] ipPartsSourceIP = header.getSourceIP().split("\\.");
+    	String[] ipPartsSourceIPInBinary = {
+    			Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[0])), Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[1])),
+    			Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[2])), Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[3]))
+    	};
     	
-		String v = "";
-    	v =leadingZero(header.getVersion(), 4) + leadingZero(header.getIhl(), 4) + leadingZero(header.getTos(),	8)
-    		+ leadingZero(header.getTotal_length(), 16) + leadingZero(header.getId(), 16) + header.getFlag()
+    	String[] ipPartsDestinationIP = header.getDestinationIP().split("\\.");
+    	String[] ipPartsDestinationIPInBinary = {
+    			Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[0])), Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[1])),
+    			Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[2])), Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[3]))
+    	};
+    	
+    	value =leadingZero(header.getVersion(), 4) + leadingZero(header.getIhl(), 4) + leadingZero(header.getTos(),	8)
+    		+ leadingZero(header.getTotalLength(), 16) + leadingZero(header.getId(), 16) + header.getFlag()
     		+ leadingZero(header.getFragment_offset(), 13) + leadingZero(header.getTtl(), 8) 
     		+ leadingZero(header.getProtocol(), 8) // + leadingZero(header.getChecksum(), 16)
-    		+ leadingZero(s, length);
+    		+ leadingZero(ipPartsSourceIPInBinary.toString(), 32) + leadingZero(ipPartsDestinationIPInBinary.toString(), 32);
 	}
     
     public Binary() {

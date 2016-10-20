@@ -22,7 +22,6 @@ public class IP_Calculator {
 				
 		int option = menu.nextInt();
 		if (option == 1){
-				menu.close();
 				IPv4_Header header = new IPv4_Header();
 				Validator valD = new Validator(header);
 				
@@ -37,7 +36,7 @@ public class IP_Calculator {
 				
 				valD.setFlag();
 
-				valD.setFragment_offset();
+				valD.setFragmentOffset();
 				
 				valD.setTtl();
 				
@@ -49,13 +48,16 @@ public class IP_Calculator {
 				
 				valD.setDestinationIp();
 				
-//				header.print();
-//				header.toBinary();
+				header.print();
+				header.printBinary();
 				
+				//close the scanner
+				menu.close();
 		} else if (option == 2) {
-			menu.close();
-			Binary header = new Binary();
+			//TODO: add conversion from binary string to Ipv4 header
+//			Binary header = new Binary();
 //			BinaryValidator bVal = new BinaryValidator(header);
+//			menu.close();
 		}
 		
 		/*

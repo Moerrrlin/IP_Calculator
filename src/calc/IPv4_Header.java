@@ -4,14 +4,14 @@ public class IPv4_Header {
 	private int version;
 	private int ihl; // IP header length
 	private int tos; // type of service
-	private int total_length;
+	private int totalLength;
 	private int id; // identification
 	private String flag = "000";
-	private int fragment_offset;
+	private int fragmentOffset;
 	private int ttl;
 	private int protocol;
-	private String source_ip; // source IP address
-	private String destination_ip; // destination IP address
+	private String sourceIP; // source IP address
+	private String destinationIP; // destination IP address
 
 	public int getVersion() {
 		return version;
@@ -51,12 +51,12 @@ public class IPv4_Header {
 		setTos(tos);
 	}
 
-	public int getTotal_length() {
-		return total_length;
+	public int getTotalLength() {
+		return totalLength;
 	}
 
-	public void setTotal_length(int total_length) {
-		this.total_length = total_length;
+	public void setTotalLength(int totalLength) {
+		this.totalLength = totalLength;
 	}
 
 	public int getId() {
@@ -81,16 +81,16 @@ public class IPv4_Header {
 	}
 
 	public int getFragment_offset() {
-		return fragment_offset;
+		return fragmentOffset;
 	}
 
-	public void setFragment_offset(int fragment_offset) {
-		this.fragment_offset = fragment_offset;
+	public void setFragmentOffset(int fragmentOffset) {
+		this.fragmentOffset = fragmentOffset;
 	}
 	
 	public void setFragment_offset(String input) {
 		int offset = Integer.parseInt(input);
-		setFragment_offset(offset);
+		setFragmentOffset(offset);
 	}
 
 	public int getTtl() {
@@ -114,40 +114,49 @@ public class IPv4_Header {
 		this.protocol = protocol;
 	}
 
-	public String getSource_ip() {
-		return source_ip;
+	public String getSourceIP() {
+		return sourceIP;
 	}
 
-	public void setSource_ip(String source_ip) {
-		this.source_ip = source_ip;
+	public void setSourceIP(String sourceIP) {
+		this.sourceIP = sourceIP;
 	}
 
-	public String getDestination_ip() {
-		return destination_ip;
+	public String getDestinationIP() {
+		return destinationIP;
 	}
 
-	public void setDestination_ip(String destination_ip) {
-		this.destination_ip = destination_ip;
+	public void setDestinationIP(String destinationIP) {
+		this.destinationIP = destinationIP;
 	}
 	
 	public void print() {
 		System.out.println("\n" + "Header information:\n" + toString());
 	}
 	
-	public void toBinary() {
-		// TODO: binary conversion
-		Binary bHeader = new Binary();
-		bHeader.toBinary(this);
+	public void printBinary() {
+		try {
+			System.out.println("\n + Binary header informattion:\n" + toBinary(this));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
+	
+	public String toBinary(IPv4_Header header) {
+		Binary bHeader = new Binary();
+		bHeader.toBinary(header);
+		return bHeader.getValue();
+	}
+	
 	
 	@Override
 	public String toString() {
 		char seperator = '-';
 		String output = Integer.toString(version) + seperator + Integer.toString(ihl) + seperator
-				+ Integer.toString(tos) + seperator + Integer.toString(total_length) + seperator + Integer.toString(id) 
-				+ seperator + flag + seperator + Integer.toString(fragment_offset) + seperator + Integer.toString(ttl)
+				+ Integer.toString(tos) + seperator + Integer.toString(totalLength) + seperator + Integer.toString(id) 
+				+ seperator + flag + seperator + Integer.toString(fragmentOffset) + seperator + Integer.toString(ttl)
 				+ seperator + Integer.toString(protocol) + seperator // + Integer.toString(checksum)
-				+ seperator + source_ip + seperator + destination_ip;
+				+ seperator + sourceIP + seperator + destinationIP;
 		return output;
 	}
 }

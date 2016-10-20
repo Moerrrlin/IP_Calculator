@@ -16,7 +16,7 @@ public class Validator {
 		boolean valid = false;
 		do {
 			try {
-				int version = fetchNumberInput("Version:");
+				int version = fetchNumberInput("\nVersion:");
 				if (version == 4 || version == 6) {
 					header.setVersion(version);
 					valid = true;
@@ -133,12 +133,12 @@ public class Validator {
 		} while (!valid);
 	}
 	
-	public void setFragment_offset() {
+	public void setFragmentOffset() {
 		boolean valid = false;
 		do {
 			try {
 				int offset = fetchNumberInput("Offset:");
-				header.setFragment_offset(offset);
+				header.setFragmentOffset(offset);
 				valid = true;
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -205,7 +205,7 @@ public class Validator {
 						throw new RuntimeException("Invalid IP adress!\n");
 					}
 				}
-				header.setSource_ip(source_ip);
+				header.setSourceIP(source_ip);
 				valid = true;
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -229,7 +229,7 @@ public class Validator {
 							throw new RuntimeException("Invalid IP adress!\n");
 						}
 					}
-					header.setDestination_ip(destination_ip);
+					header.setDestinationIP(destination_ip);
 					valid = true;
 				} else {
 					throw new RuntimeException("Please format your input appropriately.\n");
