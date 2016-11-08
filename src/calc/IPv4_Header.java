@@ -1,15 +1,16 @@
 package calc;
 
 public class IPv4_Header {
-	private int version;
+	private int version; // identifier for IPv4 or IPv6
 	private int ihl; // IP header length
 	private int tos; // type of service
 	private int totalLength;
-	private int id; // identification
+	private int id; // packet identification
 	private String flag = "000";
 	private int fragmentOffset;
-	private int ttl;
+	private int ttl; // time to live; reduced with each hop
 	private int protocol;
+	private int checksum;
 	private String sourceIP; // source IP address
 	private String destinationIP; // destination IP address
 
@@ -114,6 +115,14 @@ public class IPv4_Header {
 		this.protocol = protocol;
 	}
 
+	public int getChecksum() {
+		return checksum;
+	}
+	
+	public void setChecksum(int checksum) {
+		this.checksum = checksum;
+	}
+	
 	public String getSourceIP() {
 		return sourceIP;
 	}
