@@ -42,14 +42,16 @@ public class IP_Calculator {
 				
 				valD.setProtocol();
 
-//				valD.setChecksum();
+				valD.setChecksum();
 				
-				valD.setSourceIp();
+//				valD.setSourceIp();
+//				
+//				valD.setDestinationIp();
 				
-				valD.setDestinationIp();
+				valD.validateChecksum();
 				
 				header.print();
-				header.printBinary();
+//				header.printBinary();
 				
 				//close the scanner
 				menu.close();

@@ -187,8 +187,27 @@ public class Validator {
 		} while (!valid);
 	}
 	
-	//TODO: add header checksum field + logic
-
+	public void setChecksum() {
+	/*
+	 * Takes user input and stores it. When all header fields are entered, the checksum is
+	 * calculated and compared against the user input.
+	 */
+		boolean valid = false;
+		do {
+			try {
+				int checksum = fetchNumberInput("Checksum (decimal):");
+				if (checksum > 0) {
+					header.setChecksum(checksum);
+					valid = true;
+				} else {
+					throw new RuntimeException("Error! The checksum is negative.");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} while (!valid);
+	}
+	
 	public void setSourceIp() {
 		boolean valid = false;
 		do {
@@ -259,11 +278,45 @@ public class Validator {
 		do {
 			try {
 				number = Integer.parseInt(fetchUserInput(message));
-				
 			} catch (Exception e) {
 				System.out.println("Please enter a valid number.\n");
 			}
 		} while (number == null);
 		return number;
+	}
+	
+	public void validateChecksum() {
+		validateAnim(); // wow much fancy
+		//TODO: computing logic
+	}
+	private void validateAnim() {
+		int switcher = 0;
+		System.out.print("validating checksum. Please wait.");
+		for (int i = 0; i < 8; i++) {
+			switch (switcher) {
+			case 0: System.out.print("validating.  \r");
+					switcher = 1;
+					sleep(500);
+					break;
+			case 1: System.out.print("validating.. \r");
+					switcher = 2;
+					sleep(500);
+					break;
+			case 2: System.out.print("validating...\r");
+					switcher = 0;
+					sleep(500);
+					break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	private void sleep(long time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
