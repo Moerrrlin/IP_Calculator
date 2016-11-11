@@ -44,9 +44,9 @@ public class IP_Calculator {
 
 				valD.setChecksum();
 				
-//				valD.setSourceIp();
-//				
-//				valD.setDestinationIp();
+				valD.setSourceIp();
+				
+				valD.setDestinationIp();
 				
 				valD.validateChecksum();
 				

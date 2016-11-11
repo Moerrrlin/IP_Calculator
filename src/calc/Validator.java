@@ -9,8 +9,8 @@ import java.util.List;
 public class Validator {
 	private IPv4_Header header = null;
 	
-	public Validator(IPv4_Header header) {
-		this.header = header;
+	public Validator(IPv4_Header header1) {
+		this.header = header1;
 	}
 	public void setVersion() {
 		boolean valid = false;
@@ -33,41 +33,37 @@ public class Validator {
 		boolean valid = false;
 		do {
 			try {
-				int ihl_byte = fetchNumberInput("IHL in byte:");
-				int ihl = 0;
-				int mod = ((ihl_byte * 8) % 32);
-				if (mod == 0) {
-					ihl = ((ihl_byte * 8) / 32);
-					if (ihl >= 5 && ihl <= 15) { // minimum IHL is 5 (20 bytes); maximum 15 (60 bytes)
-						header.setIhl(ihl);
-						valid = true;
-					} else {
+				int ihl = fetchNumberInput("IHL:");
+				if (ihl >= 5 && ihl <= 15) { // minimum IHL is 5 (20 bytes); maximum 15 (60 bytes)
+					int ihl_byte = (ihl * 32) / 8;
+					header.setIhl(ihl);
+					System.out.println("You specified IHL = " + ihl + "."
+							+" The header length is " + ihl_byte + " byte.");
+					valid = true;
+				} else {
 						throw new RuntimeException("Value is outside of header size range.\n");
 					}
-				} else {
-					throw new RuntimeException("The IHL is required to be a multiple of 32bit.\n");
-				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 		} while (!valid);
 	}
-	
-	/**
-	 * 
-	 */
+
 	public void setTos() {
+		/*		RFC 791 specification:
+		 *		0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
+		 *
+		 *		as of RFC 2474 (1998) first 6 bits are relevant and interpreted as 
+		 *		DiffServ Code Points (DSCP)
+		 */
+
 		boolean valid = false;
-//		int[] allowedTOS = {
-//			0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
-//		};
 		final List<Integer> validTOS = asList(
-			0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
+				0, 8, 10, 14, 18, 22, 24, 28, 34, 36, 38, 40, 46, 48, 56
 		);
 		do {
 			try {
 				int tos = fetchNumberInput("TOS:");
-				
 				/*
 			  	for (int i : allowedTOS) {
 				  if (i == tos) {
@@ -81,7 +77,6 @@ public class Validator {
 					throw new Exception("Please enter a valid type of service.\n");
 				}
 				*/
-			
 				if (validTOS.contains(tos)) {
 					header.setTos(tos);
 					valid = true;
@@ -188,7 +183,8 @@ public class Validator {
 	}
 	
 	public void setChecksum() {
-	/*
+	/* 
+	 * temporary:
 	 * Takes user input and stores it. When all header fields are entered, the checksum is
 	 * calculated and compared against the user input.
 	 */
@@ -220,7 +216,7 @@ public class Validator {
 				}
 				for (String string : ip_parts) {
 					int ip_part = Integer.parseInt(string);
-					if (ip_part >= 0 || ip_part <= 255) {
+					if (ip_part < 0 || ip_part > 255) {
 						throw new RuntimeException("Invalid IP adress!\n");
 					}
 				}
@@ -244,7 +240,7 @@ public class Validator {
 					}
 					for (String string : ip_parts) {
 						int ip_part = Integer.parseInt(string);
-						if (ip_part >= 0 || ip_part <= 255) {
+						if (ip_part < 0 || ip_part > 255) {
 							throw new RuntimeException("Invalid IP adress!\n");
 						}
 					}
@@ -260,10 +256,33 @@ public class Validator {
 			}
 		} while (!valid);
 	}
+	
+	public void validateChecksum() {
+		validateAnim(); // wow much fancy
+		// compare user input against checksum complement of header values
+		//TODO: computing logic
+		int user_checksum = header.getChecksum();
+		int header_checksum = header.getVersion() + header.getIhl() + header.getTos() + header.getId()
+			+ Integer.parseInt(header.getFlag(),2) + header.getFragment_offset() + header.getTtl()
+			+ header.getProtocol() + 0 + getIntValueFromIP(header.getSourceIP(),0)
+			+ getIntValueFromIP(header.getSourceIP(),1) + getIntValueFromIP(header.getSourceIP(),2)
+			+ getIntValueFromIP(header.getSourceIP(),3) + getIntValueFromIP(header.getDestinationIP(),0)
+			+ getIntValueFromIP(header.getDestinationIP(),1) + getIntValueFromIP(header.getDestinationIP(),2)
+			+ getIntValueFromIP(header.getDestinationIP(),3);
+		if (user_checksum != header_checksum) {
+			header.setChecksum(header_checksum);
+			System.out.println(
+					"The header checksum didn't match the header values.\n"
+					+ "Your value was:\n" + user_checksum + " binary: " + Integer.toBinaryString(user_checksum)
+					+ "\nOur fancy algorithm computed the correct one: \n" + header_checksum
+					+ " binary: " + Integer.toBinaryString(header_checksum)
+					);
+		}
+	}
 		
 	private String fetchUserInput(String message) {
 		String input = "";
-		System.out.println(message);
+		System.out.print(message);
 		try {
 			BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
 			input = bReader.readLine();
@@ -285,12 +304,18 @@ public class Validator {
 		return number;
 	}
 	
-	public void validateChecksum() {
-		validateAnim(); // wow much fancy
-		//TODO: computing logic
+	private int getIntValueFromIP(String ip_adress, int value_position) {
+		String[] ip_adress_values = ip_adress.split("\\.");
+		int[] intarray = { 
+				Integer.parseInt(ip_adress_values[0]), Integer.parseInt(ip_adress_values[1]),
+				Integer.parseInt(ip_adress_values[2]), Integer.parseInt(ip_adress_values[3])
+		};
+		return intarray[value_position]; 
 	}
+	
 	private void validateAnim() {
 		int switcher = 0;
+		System.out.println("The IP header is complete.");
 		System.out.print("validating checksum. Please wait.");
 		for (int i = 0; i < 8; i++) {
 			switch (switcher) {

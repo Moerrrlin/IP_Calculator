@@ -9,6 +9,27 @@ public class Binary {
     public void setValue(int i, int b){
         value = leadingZero(Integer.toBinaryString(i), b);
     }
+    
+    public void setValue(IPv4_Header header) {
+    	String[] ipPartsSourceIP = header.getSourceIP().split("\\.");
+    	String[] ipPartsSourceIPInBinary = {
+    			Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[0])), Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[1])),
+    			Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[2])), Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[3]))
+    	};
+    	
+    	String[] ipPartsDestinationIP = header.getDestinationIP().split("\\.");
+    	String[] ipPartsDestinationIPInBinary = {
+    			Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[0])), Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[1])),
+    			Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[2])), Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[3]))
+    	};
+    	
+    	value =leadingZero(header.getVersion(), 4) + leadingZero(header.getIhl(), 4) + leadingZero(header.getTos(),	8)
+    		+ leadingZero(header.getTotalLength(), 16) + leadingZero(header.getId(), 16) + header.getFlag()
+    		+ leadingZero(header.getFragment_offset(), 13) + leadingZero(header.getTtl(), 8) 
+    		+ leadingZero(header.getProtocol(), 8) + leadingZero(header.getChecksum(), 16)
+    		+ leadingZero(ipPartsSourceIPInBinary.toString(), 32) + leadingZero(ipPartsDestinationIPInBinary.toString(), 32);
+	}
+    
     public String getValue() {
         return value;
     }
@@ -37,26 +58,6 @@ public class Binary {
     	}
     	return s;
     }
-    
-    public void toBinary(IPv4_Header header) {
-    	String[] ipPartsSourceIP = header.getSourceIP().split("\\.");
-    	String[] ipPartsSourceIPInBinary = {
-    			Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[0])), Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[1])),
-    			Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[2])), Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[3]))
-    	};
-    	
-    	String[] ipPartsDestinationIP = header.getDestinationIP().split("\\.");
-    	String[] ipPartsDestinationIPInBinary = {
-    			Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[0])), Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[1])),
-    			Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[2])), Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[3]))
-    	};
-    	
-    	value =leadingZero(header.getVersion(), 4) + leadingZero(header.getIhl(), 4) + leadingZero(header.getTos(),	8)
-    		+ leadingZero(header.getTotalLength(), 16) + leadingZero(header.getId(), 16) + header.getFlag()
-    		+ leadingZero(header.getFragment_offset(), 13) + leadingZero(header.getTtl(), 8) 
-    		+ leadingZero(header.getProtocol(), 8) // + leadingZero(header.getChecksum(), 16)
-    		+ leadingZero(ipPartsSourceIPInBinary.toString(), 32) + leadingZero(ipPartsDestinationIPInBinary.toString(), 32);
-	}
     
     public Binary() {
         value = "0";

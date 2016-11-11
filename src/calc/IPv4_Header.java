@@ -145,7 +145,7 @@ public class IPv4_Header {
 	
 	public void printBinary() {
 		try {
-			System.out.println("\n + Binary header informattion:\n" + toBinary(this));
+			System.out.println("\n + Binary header information:\n" + toBinary(this));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -153,7 +153,7 @@ public class IPv4_Header {
 	
 	public String toBinary(IPv4_Header header) {
 		Binary bHeader = new Binary();
-		bHeader.toBinary(header);
+		bHeader.setValue(header);
 		return bHeader.getValue();
 	}
 	
@@ -164,7 +164,7 @@ public class IPv4_Header {
 		String output = Integer.toString(version) + seperator + Integer.toString(ihl) + seperator
 				+ Integer.toString(tos) + seperator + Integer.toString(totalLength) + seperator + Integer.toString(id) 
 				+ seperator + flag + seperator + Integer.toString(fragmentOffset) + seperator + Integer.toString(ttl)
-				+ seperator + Integer.toString(protocol) + seperator // + Integer.toString(checksum)
+				+ seperator + Integer.toString(protocol) + seperator + Integer.toString(checksum)
 				+ seperator + sourceIP + seperator + destinationIP;
 		return output;
 	}
