@@ -42,16 +42,17 @@ public class IP_Calculator {
 				
 				valD.setProtocol();
 
-				valD.setChecksum();
+				System.out.println("The checksum is handled as 0. "
+					+ "Computing will be initialized after packet is complete.");
 				
 				valD.setSourceIp();
 				
 				valD.setDestinationIp();
 				
-				valD.validateChecksum();
+				valD.computeChecksum();
 				
 				header.print();
-//				header.printBinary();
+				header.printBinary();
 				
 				//close the scanner
 				menu.close();

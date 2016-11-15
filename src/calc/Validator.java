@@ -182,28 +182,6 @@ public class Validator {
 		} while (!valid);
 	}
 	
-	public void setChecksum() {
-	/* 
-	 * temporary:
-	 * Takes user input and stores it. When all header fields are entered, the checksum is
-	 * calculated and compared against the user input.
-	 */
-		boolean valid = false;
-		do {
-			try {
-				int checksum = fetchNumberInput("Checksum (decimal):");
-				if (checksum > 0) {
-					header.setChecksum(checksum);
-					valid = true;
-				} else {
-					throw new RuntimeException("Error! The checksum is negative.");
-				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		} while (!valid);
-	}
-	
 	public void setSourceIp() {
 		boolean valid = false;
 		do {
@@ -257,29 +235,27 @@ public class Validator {
 		} while (!valid);
 	}
 	
-	public void validateChecksum() {
-		validateAnim(); // wow much fancy
-		// compare user input against checksum complement of header values
-		//TODO: computing logic
-		int user_checksum = header.getChecksum();
-		int header_checksum = header.getVersion() + header.getIhl() + header.getTos() + header.getId()
-			+ Integer.parseInt(header.getFlag(),2) + header.getFragment_offset() + header.getTtl()
-			+ header.getProtocol() + 0 + getIntValueFromIP(header.getSourceIP(),0)
-			+ getIntValueFromIP(header.getSourceIP(),1) + getIntValueFromIP(header.getSourceIP(),2)
-			+ getIntValueFromIP(header.getSourceIP(),3) + getIntValueFromIP(header.getDestinationIP(),0)
-			+ getIntValueFromIP(header.getDestinationIP(),1) + getIntValueFromIP(header.getDestinationIP(),2)
-			+ getIntValueFromIP(header.getDestinationIP(),3);
-		if (user_checksum != header_checksum) {
+	public void computeChecksum() {
+		computeAnim(); // wow much fancy
+		Integer header_checksum = header.getVersion() + header.getIhl()
+			+ header.getTos() + header.getId()
+			+ Integer.parseInt(header.getFlag(),2) + header.getFragment_offset()
+			+ header.getTtl() + header.getProtocol() + 0 // checksum handled as 0 
+			//separate values from source IP
+			+ getIntValueFromIP(header.getSourceIP(),0)	+ getIntValueFromIP(header.getSourceIP(),1)
+			+ getIntValueFromIP(header.getSourceIP(),2)	+ getIntValueFromIP(header.getSourceIP(),3)
+			//separate values from destination IP
+			+ getIntValueFromIP(header.getDestinationIP(),0) + getIntValueFromIP(header.getDestinationIP(),1)
+			+ getIntValueFromIP(header.getDestinationIP(),2)+ getIntValueFromIP(header.getDestinationIP(),3);
+		if (header_checksum != null) {
 			header.setChecksum(header_checksum);
 			System.out.println(
-					"The header checksum didn't match the header values.\n"
-					+ "Your value was:\n" + user_checksum + " binary: " + Integer.toBinaryString(user_checksum)
-					+ "\nOur fancy algorithm computed the correct one: \n" + header_checksum
-					+ " binary: " + Integer.toBinaryString(header_checksum)
-					);
+				"\nOur fancy algorithm computed the packet checksum: \n" + header_checksum
+				+ " binary: " + Integer.toBinaryString(header_checksum)
+			);
 		}
 	}
-		
+
 	private String fetchUserInput(String message) {
 		String input = "";
 		System.out.print(message);
@@ -313,21 +289,21 @@ public class Validator {
 		return intarray[value_position]; 
 	}
 	
-	private void validateAnim() {
+	private void computeAnim() {
 		int switcher = 0;
 		System.out.println("The IP header is complete.");
-		System.out.print("validating checksum. Please wait.");
+		System.out.print("computing checksum. Please wait.");
 		for (int i = 0; i < 8; i++) {
 			switch (switcher) {
-			case 0: System.out.print("validating.  \r");
+			case 0: System.out.print("computing checksum.  \r");
 					switcher = 1;
 					sleep(500);
 					break;
-			case 1: System.out.print("validating.. \r");
+			case 1: System.out.print("computing checksum.. \r");
 					switcher = 2;
 					sleep(500);
 					break;
-			case 2: System.out.print("validating...\r");
+			case 2: System.out.print("computing checksum...\r");
 					switcher = 0;
 					sleep(500);
 					break;
