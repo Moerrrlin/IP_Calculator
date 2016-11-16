@@ -21,7 +21,7 @@ public class Validator {
 					header.setVersion(version);
 					valid = true;
 				} else {
-					throw new RuntimeException("Invalid version type.\n");
+					throw new RuntimeException(">> Invalid version type.\n");
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -37,11 +37,11 @@ public class Validator {
 				if (ihl >= 5 && ihl <= 15) { // minimum IHL is 5 (20 bytes); maximum 15 (60 bytes)
 					int ihl_byte = (ihl * 32) / 8;
 					header.setIhl(ihl);
-					System.out.println("You specified IHL = " + ihl + "."
-							+" The header length is " + ihl_byte + " byte.");
+					System.out.println(">> You specified IHL = " + ihl + "."
+							+" The header length is " + ihl_byte + " bytes.");
 					valid = true;
 				} else {
-						throw new RuntimeException("Value is outside of header size range.\n");
+						throw new RuntimeException(">> Value is outside of header size range.\n");
 					}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -81,7 +81,7 @@ public class Validator {
 					header.setTos(tos);
 					valid = true;
 				} else
-					throw new RuntimeException("Please enter a valid type of service.\n");
+					throw new RuntimeException(">> Please enter a valid type of service.\n");
 			
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -94,8 +94,12 @@ public class Validator {
 		do {
 			try {
 				int id = fetchNumberInput("ID:");
-				header.setId(id);
-				valid = true;
+				if (id >= 0 && id <= 65535) {
+					header.setId(id);
+					valid = true;
+				} else {
+					throw new RuntimeException(">> ID is outside of 16 bit range or negative.");
+				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -120,7 +124,7 @@ public class Validator {
 					header.setFlag(flag);
 					valid = true;
 				} else {
-					throw new Exception("Invalid flag input. \n");
+					throw new Exception(">> Invalid flag input. \n");
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -150,7 +154,7 @@ public class Validator {
 					header.setTtl(ttl);
 					valid = true;
 				} else {
-					throw new RuntimeException("The packet is expired and will be discarded.\n");
+					throw new RuntimeException(">> The packet is expired and will be discarded.\n");
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -173,8 +177,8 @@ public class Validator {
 					header.setProtocol(protocol);
 					valid = true;
 				} else {
-					throw new RuntimeException("Invalid protocol number.\r".concat(
-						"Please refer to http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml \n"));
+					throw new RuntimeException(">> Invalid protocol number.\r".concat(
+						">> Please refer to http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml \n"));
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -190,12 +194,12 @@ public class Validator {
 				
 				String[] ip_parts = source_ip.split("\\.");
 				if (ip_parts.length < 1 && ip_parts.length > 4) {
-					throw new RuntimeException("Invalid length of IP adress!\n");
+					throw new RuntimeException(">>Invalid length of IP adress!\n");
 				}
 				for (String string : ip_parts) {
 					int ip_part = Integer.parseInt(string);
 					if (ip_part < 0 || ip_part > 255) {
-						throw new RuntimeException("Invalid IP adress!\n");
+						throw new RuntimeException(">>Invalid IP adress!\n");
 					}
 				}
 				header.setSourceIP(source_ip);
@@ -214,21 +218,21 @@ public class Validator {
 				if (destination_ip.contains(".")) {
 					String[] ip_parts = destination_ip.split("\\.");
 					if (ip_parts.length < 1 && ip_parts.length > 4) {
-						throw new RuntimeException("Invalid length of IP adress!\n");
+						throw new RuntimeException(">>Invalid length of IP adress!\n");
 					}
 					for (String string : ip_parts) {
 						int ip_part = Integer.parseInt(string);
 						if (ip_part < 0 || ip_part > 255) {
-							throw new RuntimeException("Invalid IP adress!\n");
+							throw new RuntimeException(">>Invalid IP adress!\n");
 						}
 					}
 					header.setDestinationIP(destination_ip);
 					valid = true;
 				} else {
-					throw new RuntimeException("Please format your input appropriately.\n");
+					throw new RuntimeException(">>Please format your input appropriately.\n");
 				}
 			} catch (NumberFormatException nfe) {
-				System.out.println("Please enter valid numbers for the ip adress.\n");
+				System.out.println(">>Please enter valid numbers for the ip adress.\n");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -237,6 +241,7 @@ public class Validator {
 	
 	public void computeChecksum() {
 		computeAnim(); // wow much fancy
+		//using wrapper class to allow null checking
 		Integer header_checksum = header.getVersion() + header.getIhl()
 			+ header.getTos() + header.getId()
 			+ Integer.parseInt(header.getFlag(),2) + header.getFragment_offset()
@@ -250,7 +255,7 @@ public class Validator {
 		if (header_checksum != null) {
 			header.setChecksum(header_checksum);
 			System.out.println(
-				"\nOur fancy algorithm computed the packet checksum: \n" + header_checksum
+				"\n>>Our fancy algorithm computed the packet checksum: \n" + header_checksum
 				+ " binary: " + Integer.toBinaryString(header_checksum)
 			);
 		}
@@ -274,13 +279,14 @@ public class Validator {
 			try {
 				number = Integer.parseInt(fetchUserInput(message));
 			} catch (Exception e) {
-				System.out.println("Please enter a valid number.\n");
+				System.out.println(">>Please enter a valid number.\n");
 			}
 		} while (number == null);
 		return number;
 	}
 	
 	private int getIntValueFromIP(String ip_adress, int value_position) {
+		//TODO: change to allow IP addresses with length < 4
 		String[] ip_adress_values = ip_adress.split("\\.");
 		int[] intarray = { 
 				Integer.parseInt(ip_adress_values[0]), Integer.parseInt(ip_adress_values[1]),
@@ -291,19 +297,20 @@ public class Validator {
 	
 	private void computeAnim() {
 		int switcher = 0;
-		System.out.println("The IP header is complete.");
-		System.out.print("computing checksum. Please wait.");
+		System.out.println(">>The IP header is complete.");
+		String message = ">>computing checksum. Please wait.";
+		System.out.println(message);
 		for (int i = 0; i < 8; i++) {
 			switch (switcher) {
-			case 0: System.out.print("computing checksum.  \r");
+			case 0: System.out.print(message + "  \r");
 					switcher = 1;
 					sleep(500);
 					break;
-			case 1: System.out.print("computing checksum.. \r");
+			case 1: System.out.print(message + ". \r");
 					switcher = 2;
 					sleep(500);
 					break;
-			case 2: System.out.print("computing checksum...\r");
+			case 2: System.out.print(message + "..\r");
 					switcher = 0;
 					sleep(500);
 					break;
