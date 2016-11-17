@@ -189,53 +189,42 @@ public class Validator {
 	public void setSourceIp() {
 		boolean valid = false;
 		do {
-			try {
-				String source_ip = fetchUserInput("Source IP adress (ex.: 192.168.1.2):");
-				
-				String[] ip_parts = source_ip.split("\\.");
-				if (ip_parts.length < 1 && ip_parts.length > 4) {
-					throw new RuntimeException(">>Invalid length of IP adress!\n");
-				}
-				for (String string : ip_parts) {
-					int ip_part = Integer.parseInt(string);
-					if (ip_part < 0 || ip_part > 255) {
-						throw new RuntimeException(">>Invalid IP adress!\n");
-					}
-				}
-				header.setSourceIP(source_ip);
-				valid = true;
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
+			String ip = fetchUserInput("Source IP adress (ex.: 192.168.1.2):");
+			valid = validateIPadress(ip);
+			header.setSourceIP(ip);
 		} while (!valid);
 	}
 	
 	public void setDestinationIp() {
 		boolean valid = false;
 		do {
-			try {
-				String destination_ip = fetchUserInput("Enter destination IP adress (ex.: 192.168.1.4):");
-				if (destination_ip.contains(".")) {
-					String[] ip_parts = destination_ip.split("\\.");
-					if (ip_parts.length < 1 && ip_parts.length > 4) {
-						throw new RuntimeException(">>Invalid length of IP adress!\n");
-					}
-					for (String string : ip_parts) {
-						int ip_part = Integer.parseInt(string);
-						if (ip_part < 0 || ip_part > 255) {
-							throw new RuntimeException(">>Invalid IP adress!\n");
+			String ip = fetchUserInput("Destination IP adress (ex.: 192.168.1.4):");
+			valid = validateIPadress(ip);
+			// old code
+			/*	try {
+					String destination_ip = fetchUserInput("Enter destination IP adress (ex.: 192.168.1.4):");
+					//IP address has to be in notation X.X.X.X
+					if (destination_ip.contains(".")) {
+						String[] ip_parts = destination_ip.split("\\.");
+						if (ip_parts.length < 1 && ip_parts.length > 4) {
+							throw new RuntimeException(">>Invalid length of IP adress!\n");
 						}
-					}
-					header.setDestinationIP(destination_ip);
-					valid = true;
-				} else {
-					throw new RuntimeException(">>Please format your input appropriately.\n");
-				}
-			} catch (NumberFormatException nfe) {
-				System.out.println(">>Please enter valid numbers for the ip adress.\n");
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
+						for (String string : ip_parts) {
+							int ip_part = Integer.parseInt(string);
+							if (ip_part < 0 || ip_part > 255) {
+								throw new RuntimeException(">>Invalid IP adress!\n");
+							}
+						}
+						header.setDestinationIP(destination_ip);
+						valid = true;
+					} else {
+						throw new RuntimeException(">>Please format your input appropriately.\n");
+					} 
+				} catch (NumberFormatException nfe) {
+					System.out.println(">>Please enter valid numbers for the ip adress.\n");
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} */
 		} while (!valid);
 	}
 	
@@ -283,6 +272,37 @@ public class Validator {
 			}
 		} while (number == null);
 		return number;
+	}
+	private boolean  validateIPadress(String ip_adress) {
+		boolean valid = false;
+		try {
+			String ip = ip_adress;
+			//IP address has to be in notation X.X.X.X of max 32bit length
+			if (ip.contains(".")) {
+				String[] ip_parts = ip.split("\\.");
+				if (ip_parts.length < 1 && ip_parts.length > 4) {
+					throw new RuntimeException(">>Invalid length of IP adress!\n");
+				}
+				if (Integer.parseInt(ip_parts[4]) == 0) {
+					throw new RuntimeException("You entered the network IP address. Please enter a valid host IP.");
+				}
+				for (String string : ip_parts) {
+					int ip_part = Integer.parseInt(string);
+					//maximum 8bit value
+					if (ip_part < 0 || ip_part > 255) {
+						throw new RuntimeException(">>Invalid IP adress!\n");
+					}
+				}
+				valid = true;
+			} else {
+				throw new RuntimeException(">>Please format your input appropriately.\n");
+			}
+		} catch (NumberFormatException nfe) {
+			System.out.println(">>Please enter valid numbers for the ip adress.\n");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return valid;
 	}
 	
 	private int getIntValueFromIP(String ip_adress, int value_position) {
