@@ -280,11 +280,8 @@ public class Validator {
 			//IP address has to be in notation X.X.X.X of max 32bit length
 			if (ip.contains(".")) {
 				String[] ip_parts = ip.split("\\.");
-				if (ip_parts.length < 1 && ip_parts.length > 4) {
+				if (ip_parts.length != 4) {
 					throw new RuntimeException(">>Invalid length of IP adress!\n");
-				}
-				if (Integer.parseInt(ip_parts[4]) == 0) {
-					throw new RuntimeException("You entered the network IP address. Please enter a valid host IP.");
 				}
 				for (String string : ip_parts) {
 					int ip_part = Integer.parseInt(string);
@@ -292,6 +289,9 @@ public class Validator {
 					if (ip_part < 0 || ip_part > 255) {
 						throw new RuntimeException(">>Invalid IP adress!\n");
 					}
+				}
+				if (Integer.parseInt(ip_parts[4]) == 0) {
+					throw new RuntimeException("You entered the networks IP address. Please enter a host IP.");
 				}
 				valid = true;
 			} else {
@@ -306,7 +306,6 @@ public class Validator {
 	}
 	
 	private int getIntValueFromIP(String ip_adress, int value_position) {
-		//TODO: change to allow IP addresses with length < 4
 		String[] ip_adress_values = ip_adress.split("\\.");
 		int[] intarray = { 
 				Integer.parseInt(ip_adress_values[0]), Integer.parseInt(ip_adress_values[1]),
