@@ -140,14 +140,15 @@ public class IPv4_Header {
 	}
 	
 	public void print() {
-		System.out.println("\n" + "Header information:\n" + toString());
+		System.out.println("\nHeader information:\n" + toSeperatedString());
 	}
 	
 	public void printBinary() {
 		try {
-			System.out.println("\n + Binary header information:\n" + toBinary(this));
+			System.out.println("\nBinary header information:");
+			System.out.println(toBinary(this));
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -157,15 +158,15 @@ public class IPv4_Header {
 		return bHeader.getValue();
 	}
 	
-	
-	@Override
-	public String toString() {
+	public String toSeperatedString() {
 		char seperator = '-';
-		String output = Integer.toString(version) + seperator + Integer.toString(ihl) + seperator
-				+ Integer.toString(tos) + seperator + Integer.toString(totalLength) + seperator + Integer.toString(id) 
-				+ seperator + flag + seperator + Integer.toString(fragmentOffset) + seperator + Integer.toString(ttl)
-				+ seperator + Integer.toString(protocol) + seperator + Integer.toString(checksum)
-				+ seperator + sourceIP + seperator + destinationIP;
+		String output = 
+			Integer.toString(version) + seperator + Integer.toString(ihl) + seperator
+			+ Integer.toString(tos) + seperator + Integer.toString(totalLength) + seperator
+			+ Integer.toString(id) + seperator + flag + seperator
+			+ Integer.toString(fragmentOffset) + seperator + Integer.toString(ttl) + seperator
+			+ Integer.toString(protocol) + seperator + Integer.toString(checksum) + seperator
+			+ sourceIP + seperator + destinationIP;
 		return output;
 	}
 }

@@ -52,6 +52,7 @@ public class Validator {
 	public void setTotalLength() {
 		// payload is neglected in this task: totalLength = ihl
 		try {
+			System.out.println("Payload is assumed 0.");
 			header.setTotalLength(header.getIhl());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -209,6 +210,7 @@ public class Validator {
 		do {
 			String ip = fetchUserInput("Destination IP adress (ex.: 192.168.1.4):");
 			valid = validateIPadress(ip);
+			header.setDestinationIP(ip);
 			// old code
 			/*	try {
 					String destination_ip = fetchUserInput("Enter destination IP adress (ex.: 192.168.1.4):");
@@ -259,7 +261,7 @@ public class Validator {
 		}
 	}
 
-	private String fetchUserInput(String message) {
+	public static String fetchUserInput(String message) {
 		String input = "";
 		System.out.print(message);
 		try {
@@ -271,7 +273,7 @@ public class Validator {
 		return input;
 	}
 	
-	private int fetchNumberInput(String message) {
+	public static int fetchNumberInput(String message) {
 		Integer number = null;
 		do {
 			try {
@@ -299,7 +301,7 @@ public class Validator {
 						throw new RuntimeException(">>Invalid IP adress!\n");
 					}
 				}
-				if (Integer.parseInt(ip_parts[4]) == 0) {
+				if (Integer.parseInt(ip_parts[3]) == 0) {
 					throw new RuntimeException("You entered the networks IP address. Please enter a host IP.");
 				}
 				valid = true;
@@ -309,7 +311,7 @@ public class Validator {
 		} catch (NumberFormatException nfe) {
 			System.out.println(">>Please enter valid numbers for the ip adress.\n");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return valid;
 	}

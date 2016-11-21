@@ -63,19 +63,12 @@ public class IP_Calculator {
 				menu.close();
 			} else if (option == 2) {
 				valid_option = true;
-				System.out.println(">>Preparing to convert header information. Please enter the following data to proceed.");
-				//TODO: add conversion from binary string to Ipv4 header
-//				Binary header = new Binary();
-//				BinaryValidator bVal = new BinaryValidator(header);
-//				menu.close();
-				
-				/*
-				header.setHeader(); // set the header via user input
-
-				header.printDecimal(); // print the header information
-
-				header.printBinary(); // print the header in binary format
-				*/
+				System.out.println(">>Preparing to convert header information.\n"
+						+ ">>Please enter a binary header object to proceed:");
+				Binary bHeader = new Binary(Validator.fetchUserInput("Input:"));
+				System.out.print("\nDecimal header information:\n"
+				+ bHeader.toDecimalHeaderString());
+				menu.close();
 			} else {
 				System.out.println(">>No such option!");
 			}
