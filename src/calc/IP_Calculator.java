@@ -35,6 +35,8 @@ public class IP_Calculator {
 				
 				valD.setTos();
 				
+				valD.setTotalLength();
+				
 				valD.setID();
 				
 				valD.setFlag();

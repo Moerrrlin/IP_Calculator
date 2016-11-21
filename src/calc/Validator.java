@@ -48,7 +48,16 @@ public class Validator {
 			}
 		} while (!valid);
 	}
-
+	
+	public void setTotalLength() {
+		// payload is neglected in this task: totalLength = ihl
+		try {
+			header.setTotalLength(header.getIhl());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	public void setTos() {
 		/*		RFC 791 specification:
 		 *		0, 32, 40, 56, 72, 88, 96, 112, 136, 144, 152, 160, 184, 192, 224
