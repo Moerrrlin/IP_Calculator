@@ -1,4 +1,8 @@
 package calc;
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Binary {
     private String value;
@@ -75,30 +79,11 @@ public class Binary {
     	return s;
     }
     
-    public Binary() {
-        value = "0";
-    }
-    public Binary(String s) {
-        value = s;
-    }
-    public Binary(int i){
-        value = Integer.toBinaryString(i);
-    }
-    
-	private String removeWhitespace(Binary b) {
-		String s = b.getValue().replaceAll("\\s","");
-		if(isBinary(s)) {
-			return s;
-		} else {
-			throw new RuntimeException("The input is not in binary notation!");
-		}
-	}
-	
 	public String toDecimalHeaderString() {
 		try {
 			String output = "";
 			String sHeader = this.getValue();
-			if (!sHeader.matches("\\S+")) {
+			if (!sHeader.contains("\\S+")) {
 				String[] bHeaderArray = sHeader.split("\\s");
 				char seperator = '-';
 				for (int i = 0; i < (bHeaderArray.length); i++) {
@@ -111,8 +96,23 @@ public class Binary {
 				}
 				return output;
 			} else if (isBinary(sHeader)) {
+				/* Iterates over list fieldLengths and adds parts
+				 * of different lengths (elements of list) of a given string to an array list
+				 * string must be binary; conversion to decimal 
+				 */
 				output = "";
-				//TODO process binary string
+				final List<Integer> fieldLengths = asList(
+						4, 4, 8, 16, 16, 3, 13, 8, 16,
+						8, 8, 8, 8, //Source IP split
+						8, 8, 8, 8 // Destination IP split
+				); 
+				int counter = 0;
+				ArrayList<Integer> decValues = new ArrayList<Integer>();
+				for (Integer field : fieldLengths) {
+					decValues.add(Integer.parseInt(sHeader.substring(counter, counter+field),2));
+					counter += field;
+				}
+				//TODO format IP address output
 				return output;
 			} else {
 				throw new RuntimeException();
@@ -122,4 +122,23 @@ public class Binary {
 			return null;
 		}
 	}
+	
+	private String removeWhitespace(Binary b) {
+		String s = b.getValue().replaceAll("\\s","");
+		if(isBinary(s)) {
+			return s;
+		} else {
+			throw new RuntimeException("The input is not in binary notation!");
+		}
+	}
+	
+	public Binary() {
+        value = "0";
+    }
+    public Binary(String s) {
+        value = s;
+    }
+    public Binary(int i){
+        value = Integer.toBinaryString(i);
+    }
 }
