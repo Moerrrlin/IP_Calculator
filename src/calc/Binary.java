@@ -53,7 +53,7 @@ public class Binary {
         return value;
     }
     
-    public Boolean isBinary(String s){
+    public static Boolean isBinary(String s){
         for (int i = 0; i < s.length(); i++) {
             switch (s.charAt(i)){
                 case '0':   break;
@@ -83,7 +83,7 @@ public class Binary {
 		try {
 			String output = "";
 			String sHeader = this.getValue();
-			if (!sHeader.contains("\\S+")) {
+			if (sHeader.contains(" ")) {
 				String[] bHeaderArray = sHeader.split("\\s");
 				char seperator = '-';
 				for (int i = 0; i < (bHeaderArray.length); i++) {
@@ -102,7 +102,7 @@ public class Binary {
 				 */
 				output = "";
 				final List<Integer> fieldLengths = asList(
-						4, 4, 8, 16, 16, 3, 13, 8, 16,
+						4, 4, 8, 16, 16, 3, 13, 8, 8, 16,
 						8, 8, 8, 8, //Source IP split
 						8, 8, 8, 8 // Destination IP split
 				); 
@@ -112,7 +112,36 @@ public class Binary {
 					decValues.add(Integer.parseInt(sHeader.substring(counter, counter+field),2));
 					counter += field;
 				}
+				char seperator = '-';
+				//concatenate the first 5 fields to the output
+				for (int i = 0; i <5 ; i++) {
+					output += decValues.get(i).toString() + seperator;
+				}
+				//get Flags from binary input
+				output += sHeader.substring(47, 50) + seperator;
+				//get next four fields after flags
+				for (int i = 6; i <= 9; i++) {
+					output += decValues.get(i).toString() + seperator;
+				}
 				//TODO format IP address output
+				char ctr = '.';
+				String ip1 = "";
+				String ip2 = "";
+				for (int i = 10; i < decValues.size(); i++) {
+					//get next four fields = source IP
+					if (i < 13) {
+						ip1 += decValues.get(i).toString() + ctr;
+					//last concatenation without dot
+					} else if (i == 13) {
+						ip1 += decValues.get(i).toString();
+					//last concatenation without dot
+					} else if (i > 13 && (i == decValues.size() -1)) {
+						ip2 += decValues.get(i).toString();
+					} else if (i > 13) {
+						ip2 += decValues.get(i).toString() + ctr;
+					}
+				}
+				output += ip1 + seperator + ip2;
 				return output;
 			} else {
 				throw new RuntimeException();
