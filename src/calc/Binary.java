@@ -81,20 +81,44 @@ public class Binary {
     
 	public String toDecimalHeaderString() {
 		try {
+			char seperator = '-';
+			char ctr = '.'; //for IP address formatting
 			String output = "";
 			String sHeader = this.getValue();
-			//binary string is entered with 
+			//binary string is entered with whitespace
 			if (sHeader.contains(" ")) {
+				// "\\s" is regular expression for whitespace
 				String[] bHeaderArray = sHeader.split("\\s");
-				char seperator = '-';
 				for (int i = 0; i < (bHeaderArray.length); i++) {
 					if (isBinary(bHeaderArray[i])) {
-						int temp = Integer.parseInt(bHeaderArray[i],2);
-						if (i == (bHeaderArray.length -1)) {
-							output += Integer.toString(temp);
+						if (i == 5) {
+							output += bHeaderArray[i] + seperator;
+						}else if (i == bHeaderArray.length -2) { //source IP location
+							String ip1 = "";
+							for (int j = 0; j < bHeaderArray[i].length(); j+=8) {
+								int dectemp = Integer.parseInt(bHeaderArray[i].substring(j, j+8), 2);
+								if (j == 24) {
+									ip1 += Integer.toString(dectemp);
+									output += ip1 + seperator;
+								} else {
+									ip1 += Integer.toString(dectemp) + ctr;
+								}
+							}
+						} else if (i == bHeaderArray.length -1) { //destination IP location
+							String ip2 = "";
+							for (int j = 0; j < bHeaderArray[i].length(); j+=8) {
+								int dectemp = Integer.parseInt(bHeaderArray[i].substring(j, j+8), 2);
+								if (j == 24) {
+									ip2 += Integer.toString(dectemp);
+									output += ip2;
+								} else {
+									ip2 += Integer.toString(dectemp) + ctr;
+								}
+							}
 						} else {
+							int temp = Integer.parseInt(bHeaderArray[i],2);
 							output += Integer.toString(temp) + seperator;
-						}
+						}				
 					} else {
 						throw new RuntimeException("The entered string is not in binary notation");
 					}
@@ -115,10 +139,10 @@ public class Binary {
 				int counter = 0;
 				ArrayList<Integer> decValues = new ArrayList<Integer>();
 				for (Integer field : fieldLengths) {
+					//parsing the bit segments per substring function to Integer (radix 2)
 					decValues.add(Integer.parseInt(sHeader.substring(counter, counter+field),2));
 					counter += field;
 				}
-				char seperator = '-';
 				//concatenate the first 5 fields to the output
 				for (int i = 0; i <5 ; i++) {
 					output += decValues.get(i).toString() + seperator;
@@ -129,8 +153,6 @@ public class Binary {
 				for (int i = 6; i <= 9; i++) {
 					output += decValues.get(i).toString() + seperator;
 				}
-				//TODO format IP address output
-				char ctr = '.';
 				String ip1 = "";
 				String ip2 = "";
 				for (int i = 10; i < decValues.size(); i++) {
@@ -154,10 +176,10 @@ public class Binary {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return "An error occured.";
 		}
 	}
-	
+	//not used, can be used. I didn't use it, don't ask why.
 	private String removeWhitespace(Binary b) {
 		String s = b.getValue().replaceAll("\\s","");
 		if(isBinary(s)) {
