@@ -83,18 +83,24 @@ public class Binary {
 		try {
 			String output = "";
 			String sHeader = this.getValue();
+			//binary string is entered with 
 			if (sHeader.contains(" ")) {
 				String[] bHeaderArray = sHeader.split("\\s");
 				char seperator = '-';
 				for (int i = 0; i < (bHeaderArray.length); i++) {
-					int temp = Integer.parseInt(bHeaderArray[i],2);
-					if (i == (bHeaderArray.length -1)) {
-						output += Integer.toString(temp);
+					if (isBinary(bHeaderArray[i])) {
+						int temp = Integer.parseInt(bHeaderArray[i],2);
+						if (i == (bHeaderArray.length -1)) {
+							output += Integer.toString(temp);
+						} else {
+							output += Integer.toString(temp) + seperator;
+						}
 					} else {
-						output += Integer.toString(temp) + seperator;
+						throw new RuntimeException("The entered string is not in binary notation");
 					}
-				}
+				}	
 				return output;
+			//entered string doesn't contain whitespace
 			} else if (isBinary(sHeader)) {
 				/* Iterates over list fieldLengths and adds parts
 				 * of different lengths (elements of list) of a given string to an array list
