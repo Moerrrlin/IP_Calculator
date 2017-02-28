@@ -13,7 +13,7 @@ public class Binary {
     public void setValue(int i, int b){
         value = leadingZero(Integer.toBinaryString(i), b);
     }
-    
+
     public void setValue(IPv4_Header header) {
     	try {
 	    	String[] ipPartsSourceIP = header.getSourceIP().split("\\.");
@@ -23,10 +23,10 @@ public class Binary {
 	    			+ leadingZero(Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[1])), 8)
 	    			+ leadingZero(Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[2])), 8)
 	    			+ leadingZero(Integer.toBinaryString(Integer.parseInt(ipPartsSourceIP[3])), 8);
-	    	
+
 	    	String[] ipPartsDestinationIP = header.getDestinationIP().split("\\.");
 	    	//32 bit word
-	    	String ipPartsDestinationIPInBinary = 
+	    	String ipPartsDestinationIPInBinary =
 	    			leadingZero(Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[0])), 8)
 	    			+ leadingZero(Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[1])), 8)
 	    			+ leadingZero(Integer.toBinaryString(Integer.parseInt(ipPartsDestinationIP[2])), 8)
@@ -35,8 +35,8 @@ public class Binary {
 	    	value = leadingZero(header.getVersion(), 4) + seperator;
 			value += leadingZero(header.getIhl(), 4) + seperator;
 			value += leadingZero(header.getTos(),8) + seperator;
-			value += leadingZero(header.getTotalLength(), 16) + seperator; 
-			value += leadingZero(header.getId(), 16) + seperator; 
+			value += leadingZero(header.getTotalLength(), 16) + seperator;
+			value += leadingZero(header.getId(), 16) + seperator;
 			value += header.getFlag() + seperator;
 			value +=  leadingZero(header.getFragment_offset(), 13) + seperator;
 			value +=  leadingZero(header.getTtl(), 8) + seperator;
@@ -48,11 +48,11 @@ public class Binary {
 			e.printStackTrace();
 		}
 	}
-    
+
     public String getValue() {
         return value;
     }
-    
+
     public static Boolean isBinary(String s){
         for (int i = 0; i < s.length(); i++) {
             switch (s.charAt(i)){
@@ -63,22 +63,22 @@ public class Binary {
         }
         return true;
     }
-    
-    public String leadingZero(String s, int length) {
+
+    public static String leadingZero(String s, int length) {
 		while (s.length() < length) {
 			s = '0' + s;
 		}
 		return s;
 	}
-    
-    public String leadingZero(int i, int length) {
+
+    public static String leadingZero(int i, int length) {
     	String s  = Integer.toBinaryString(i);
     	while  (s.length() < length) {
     		s = "0" + s;
     	}
     	return s;
     }
-    
+
 	public String toDecimalHeaderString() {
 		try {
 			char seperator = '-';
@@ -118,24 +118,24 @@ public class Binary {
 						} else {
 							int temp = Integer.parseInt(bHeaderArray[i],2);
 							output += Integer.toString(temp) + seperator;
-						}				
+						}
 					} else {
 						throw new RuntimeException("The entered string is not in binary notation");
 					}
-				}	
+				}
 				return output;
 			//entered string doesn't contain whitespace
 			} else if (isBinary(sHeader)) {
 				/* Iterates over list fieldLengths and adds parts
 				 * of different lengths (elements of list) of a given string to an array list
-				 * string must be binary; conversion to decimal 
+				 * string must be binary; conversion to decimal
 				 */
 				output = "";
 				final List<Integer> fieldLengths = asList(
 						4, 4, 8, 16, 16, 3, 13, 8, 8, 16,
 						8, 8, 8, 8, //Source IP split
 						8, 8, 8, 8 // Destination IP split
-				); 
+				);
 				int counter = 0;
 				ArrayList<Integer> decValues = new ArrayList<Integer>();
 				for (Integer field : fieldLengths) {
@@ -188,7 +188,7 @@ public class Binary {
 			throw new RuntimeException("The input is not in binary notation!");
 		}
 	}
-	
+
 	public Binary() {
         value = "0";
     }
