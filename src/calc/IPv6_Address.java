@@ -1,30 +1,34 @@
 package calc;
 
 public class IPv6_Address{
-    private String[] address_hex = new String[8];
-    private String address_bin = "";
+    private String[] addressHex = new String[8];
+    private Binary[] addressBin = new Binary[8];
 
     public void setAddressHex(String[] addr){
-        address_hex = addr;
+        addressHex = addr;
     }
 
-    public void setAddressBin(String addr){
-        address_bin = addr;
+    public void setAddressBin(Binary[] addr){
+        addressBin = addr;
     }
 
     public String[] getAddressHex(){
-        return address_hex;
+        return addressHex;
     }
 
     public String getAddressHex(int i){
-        return address_hex[i];
+        return addressHex[i];
     }
 
-    public String getAddressBin(){
-        return address_bin;
+    public Binary getAddressBin(){
+        return addressBin;
+    }
+    
+    public Binary getAddressBin(int i){
+        return addressBin[i];
     }
 
-    public void displayHex(){
+    public void toStringHex(){
         String string = "";
         for(int i = 0; i < 8; i++){
             string += getAddressHex(i);
@@ -32,14 +36,26 @@ public class IPv6_Address{
                 string += ":";
             }
         }
-        System.out.println(string);
+        return string;
+    }
+    
+    public void displayHex(){
+        System.out.println(toStringHex());
     }
 
+    public void toStringBin(){
+        String string = "";
+        for(int i = 0; i < 8; i++){
+            string += getAddressBin(i);
+        }
+        return string;
+    }
+    
     public void displayBin(){
-        System.out.println(getAddressBin());
+        System.out.println(toStringBin());
     }
 
-    public String toBinaryString(){
+    public String toBinary(){
         String hex = "0123456789ABCDEF";
         String addressBinary = "";
         for(int i = 0; i < 8; i++){
@@ -54,13 +70,19 @@ public class IPv6_Address{
         return addressBinary;
     }
 
-    public string toHexadecimalString(){
+    public string toHexadecimal(){
         String addressHexadecimal = "";
 
         return addressHexadecimal;
     }
 
     public IPv6_Address(String[] addr){
-        address_hex = addr;
+        addressHex = addr;
+        addressBin = addr.toBinary();
+    }
+    
+    public IPv6_Address(Binary[] addr){
+        addressBin = addr;
+        addressHex = addr.toHexadecimal();
     }
 }
