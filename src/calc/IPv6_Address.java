@@ -24,14 +24,6 @@ public class IPv6_Address{
         return address_bin;
     }
 
-    public String toStringHex(){
-        String string = "";
-        for(int i = 0; i < 8; i++){
-            string += getAddressHex(i);
-        }
-        return string;
-    }
-
     public void displayHex(){
         String string = "";
         for(int i = 0; i < 8; i++){
@@ -44,14 +36,7 @@ public class IPv6_Address{
     }
 
     public void displayBin(){
-        String string = "";
-        for(int i = 0; i < 8; i++){
-            string += getAddressBin(i);
-            if(i < 8 - 1){
-                string += ":";
-            }
-        }
-        System.out.println(string);
+        System.out.println(getAddressBin());
     }
 
     public String toBinaryString(){
