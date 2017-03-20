@@ -8,8 +8,16 @@ public class IPv6_Address{
         addressHex = addr;
     }
 
+     public void setAddressHex(String element, int i){
+        addressHex[i] = element;
+    }
+
     public void setAddressBin(Binary[] addr){
         addressBin = addr;
+    }
+
+     public void setAddressBin(Binary element, int i){
+        addressBin[i] = element;
     }
 
     public String[] getAddressHex(){
@@ -20,7 +28,7 @@ public class IPv6_Address{
         return addressHex[i];
     }
 
-    public Binary getAddressBin(){
+    public Binary[] getAddressBin(){
         return addressBin;
     }
     
@@ -28,7 +36,7 @@ public class IPv6_Address{
         return addressBin[i];
     }
 
-    public void toStringHex(){
+    public String toStringHex(){
         String string = "";
         for(int i = 0; i < 8; i++){
             string += getAddressHex(i);
@@ -43,10 +51,10 @@ public class IPv6_Address{
         System.out.println(toStringHex());
     }
 
-    public void toStringBin(){
+    public String toStringBin(){
         String string = "";
         for(int i = 0; i < 8; i++){
-            string += getAddressBin(i);
+            string += getAddressBin(i).getValue();
         }
         return string;
     }
@@ -55,22 +63,33 @@ public class IPv6_Address{
         System.out.println(toStringBin());
     }
 
-    public String toBinary(){
+    public void toBinary(){
+        //all possible values of a hexadecimal number
         String hex = "0123456789ABCDEF";
-        String addressBinary = "";
+        Binary[] addressBin = new Binary[8];
+        //run through all elements of the IPv6 address in hexadecimal form
         for(int i = 0; i < 8; i++){
+            //grab current hexadecimal address element
             String addressElement = this.getAddressHex(i).toUpperCase();
+            //initialize an invalid binary number to fill in the next step
+            Binary addressElementBinary = new Binary("");
+            //run through all four digits of the hexadecimal address element
             for(int j = 0; j < 4; j++){
+                //grab current digit of the hexadecimal address element
                 char addressElementChar = addressElement.charAt(j);
-                Binary addressElementBinary = new Binary(Integer.toBinaryString(hex.indexOf(addressElementChar)));
-
-                addressBinary += Binary.leadingZero(addressElementBinary.getValue(), 4);
+                //convert the digit into binary form, adding leading zeros if needed
+                Binary addressElementCharBinary = new Binary(Integer.toBinaryString(hex.indexOf(addressElementChar)), 4);
+                //add the converted digit to the binary number
+                addressElementBinary.setValue(addressElementBinary.getValue().concat(addressElementCharBinary.getValue()));
             }
+            //insert the binary address element into the array
+            addressBin[i] = addressElementBinary;
         }
-        return addressBinary;
+        //set the attribute addressBin the calculated binary array
+        this.setAddressBin(addressBin);
     }
 
-    public string toHexadecimal(){
+    public String toHexadecimal(){
         String addressHexadecimal = "";
 
         return addressHexadecimal;
@@ -78,11 +97,18 @@ public class IPv6_Address{
 
     public IPv6_Address(String[] addr){
         addressHex = addr;
-        addressBin = addr.toBinary();
+        this.toBinary();
     }
     
     public IPv6_Address(Binary[] addr){
         addressBin = addr;
-        addressHex = addr.toHexadecimal();
+        //addressHex = addr.toHexadecimal();
+    }
+
+    public static void main(String[] args) {
+        String[] myStringArray = {"7C10", "FFFF", "0000", "1111", "4321", "AC1B", "AC1B", "AC1B"};
+        IPv6_Address test = new IPv6_Address(myStringArray);
+        test.displayHex();
+        test.displayBin();
     }
 }
