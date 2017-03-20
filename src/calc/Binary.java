@@ -7,14 +7,23 @@ import java.util.List;
 public class Binary {
     private String value;
 
+	public void setValue(String s) {
+        value = s;
+    }
+
     public void setValue(String s, int b) {
         value = leadingZero(s, b);
     }
+
+	public void setValue(int i){
+        value = Integer.toBinaryString(i);
+    }
+
     public void setValue(int i, int b){
         value = leadingZero(Integer.toBinaryString(i), b);
     }
 
-    public void setValue(IPv4_Header header) {
+    /*public void setValue(IPv4_Header header) {
     	try {
 	    	String[] ipPartsSourceIP = header.getSourceIP().split("\\.");
 	    	//32 bit word
@@ -47,7 +56,7 @@ public class Binary {
     	} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
     public String getValue() {
         return value;
@@ -195,7 +204,16 @@ public class Binary {
     public Binary(String s) {
         value = s;
     }
-    public Binary(int i){
-        value = Integer.toBinaryString(i);
+
+	public Binary(String string, int i) {
+        value = leadingZero(string, i);
+    }
+
+    public Binary(int integer){
+        value = Integer.toBinaryString(integer);
+    }
+
+	public Binary(int integer, int i){
+        value = leadingZero(integer, i);
     }
 }
