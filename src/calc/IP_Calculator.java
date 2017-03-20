@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class IP_Calculator {
 
 	public static void main(String[] args) {
-		Scanner menu = new Scanner(System.in);
+		/*Scanner menu = new Scanner(System.in);
 		boolean valid_option = false;
 		// arbitrary option menu
 		System.out.println(
@@ -73,6 +73,7 @@ public class IP_Calculator {
 				menu.close();
 			} else if (option == 2) {
 				valid_option = true;
+				
 				System.out.println(">>Preparing to convert header information.\n"
 						+ ">>Please enter a binary header object to proceed:");
 				Binary bHeader = new Binary(Validator.fetchUserInput("Input:"));
@@ -88,6 +89,6 @@ public class IP_Calculator {
 			} else {
 				System.out.println(">>No such option!");
 			}
-		}
+		}*/
 	}
 }

@@ -1,7 +1,7 @@
 package calc;
 
 public class IPv4_Header {
-	private int version; // identifier for IPv4 or IPv6
+	/*private int version; // identifier for IPv4 or IPv6
 	private int ihl; // IP header length
 	private int tos; // type of service
 	private int totalLength;
@@ -168,5 +168,5 @@ public class IPv4_Header {
 			+ Integer.toString(protocol) + seperator + Integer.toString(checksum) + seperator
 			+ sourceIP + seperator + destinationIP;
 		return output;
-	}
+	}*/
 }

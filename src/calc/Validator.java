@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 public class Validator {
+	/*
 	private IPv4_Header header = null;
 	
 	public Validator(IPv4_Header header1) {
@@ -66,7 +67,7 @@ public class Validator {
 		 *		as of RFC 2474 (1998) first 6 bits are relevant and interpreted as 
 		 *		DiffServ Code Points (DSCP)
 		 */
-
+/*
 		boolean valid = false;
 		final List<Integer> validTOS = asList(
 				0, 8, 10, 14, 18, 22, 24, 28, 34, 36, 38, 40, 46, 48, 56
@@ -87,6 +88,7 @@ public class Validator {
 					throw new Exception("Please enter a valid type of service.\n");
 				}
 				*/
+				/*
 				if (validTOS.contains(tos)) {
 					header.setTos(tos);
 					valid = true;
@@ -183,6 +185,7 @@ public class Validator {
 				 * 253 + 254: Use for experimentation and testing
 				 * 255: reserved
 				 */
+				/*
 				if (protocol >= 0 & protocol <= 142) {
 					header.setProtocol(protocol);
 					valid = true;
@@ -236,6 +239,7 @@ public class Validator {
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				} */
+				/*
 		} while (!valid);
 	}
 	
@@ -356,5 +360,5 @@ public class Validator {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 }
