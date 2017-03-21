@@ -96,7 +96,7 @@ public class IPv6_Address{
                 String addrElemSeg = addrElem.substring(j, j + 4);
                 //binary to hexadecimal conversion
                 String addrElemSegHex = Integer.toString(Integer.parseInt(addrElemSeg, 2), 16);
-                addrElemHex.concat(addrElemSegHex);
+                addrElemHex = addrElemHex.concat(addrElemSegHex);
             }
             addrHex[i] = addrElemHex;
         }
@@ -116,10 +116,10 @@ public class IPv6_Address{
     public static void main(String[] args) {
         String[] myStringArray = {"7C10", "FFFF", "0000", "1111", "4321", "AC1B", "AC1B", "AC1B"};
         IPv6_Address test = new IPv6_Address(myStringArray);
-        IPv6_Address test1 = new IPv6_Address(test.getAddressBin());
         test.displayHex();
         test.displayBin();
-        test1.displayHex();
-        test1.displayBin();
+        IPv6_Header a = new IPv6_Header(6,24,1,0,0,32,test,test);
+        a.displayDec();
+        a.displayBin();
     }
 }
