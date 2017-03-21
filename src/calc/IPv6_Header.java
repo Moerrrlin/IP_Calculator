@@ -1,19 +1,19 @@
 package calc;
 
 public class IPv6_Header {
-    private int versionDec;
-    private Binary versionBin;
+	private int versionDec;
+	private Binary versionBin;
 	private int trafficClassDec;
-    private Binary trafficClassBin;
+	private Binary trafficClassBin;
 	private int flowLabelDec;
-    private Binary flowLabelBin;
+	private Binary flowLabelBin;
 	private int payloadLengthDec;
-    private Binary payloadLengthBin;
+	private Binary payloadLengthBin;
 	private int nextHeaderDec;
 	private Binary nextHeaderBin;
 	private int hopLimitDec;
 	private Binary hopLimitBin;
-    private IPv6_Address sourceAddress;
+	private IPv6_Address sourceAddress;
 	private IPv6_Address destinationAddress;
 
 	public void setVersion(int version){
