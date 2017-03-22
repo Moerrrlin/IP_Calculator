@@ -79,6 +79,17 @@ public class IP_Calculator {
 				case 3:
 					valid_option = true;
 					IPv6_Validator validator = new IPv6_Validator();
+					int version = validator.getCheckedHeader().getVersionDec();
+					int trafficClass = validator.getCheckedHeader().getTrafficClassDec();
+					int flowLabel = validator.getCheckedHeader().getFlowLabelDec();
+					int payloadLength = validator.getCheckedHeader().getPayloadLengthDec();
+					int nextHeader = validator.getCheckedHeader().getNextHeaderDec();
+					int hopLimit = validator.getCheckedHeader().getHopLimitDec();
+					IPv6_Address sourceIp = validator.getCheckedHeader().getSourceAddr();
+					IPv6_Address destinationIp = validator.getCheckedHeader().getDestinationAddr();
+					IPv6_Header header = new IPv6_Header(version, trafficClass, flowLabel, payloadLength, nextHeader, hopLimit, sourceIp, destinationIp);
+					header.displayDec();
+					header.displayBin();
 					menu.close();
 					break;
 				case 4:
