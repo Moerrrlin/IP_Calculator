@@ -26,6 +26,10 @@ public class IPv6_Header {
 		this.versionBin = version;
 	}
 
+	public int getVersionDec(){
+		return this.versionDec;
+	}
+
 	public void setTrafficClass(int trafficClass){
 		this.trafficClassDec = trafficClass;
 		this.trafficClassBin = new Binary(Integer.toBinaryString(trafficClass), 8);
@@ -34,6 +38,10 @@ public class IPv6_Header {
 	public void setTrafficClass(Binary trafficClass){
 		this.trafficClassDec = Integer.parseInt(trafficClass.getValue(), 2);
 		this.trafficClassBin = trafficClass;
+	}
+
+	public int getTrafficClassDec(){
+		return this.trafficClassDec;
 	}
 
 	public void setFlowLabel(int flowLabel){
@@ -46,6 +54,10 @@ public class IPv6_Header {
 		this.flowLabelBin = flowLabel;
 	}
 
+	public int getFlowLabelDec(){
+		return this.flowLabelDec;
+	}
+
 	public void setPayloadLength(int payloadLength){
 		this.payloadLengthDec = payloadLength;
 		this.payloadLengthBin = new Binary(Integer.toBinaryString(payloadLength), 16);
@@ -54,6 +66,10 @@ public class IPv6_Header {
 	public void setPayloadLength(Binary payloadLength){
 		this.payloadLengthDec = Integer.parseInt(payloadLength.getValue(), 2);
 		this.payloadLengthBin = payloadLength;
+	}
+
+	public int getPayloadLengthDec(){
+		return this.payloadLengthDec;
 	}
 
 	public void setNextHeader(int nextHeader){
@@ -66,6 +82,10 @@ public class IPv6_Header {
 		this.nextHeaderBin = nextHeader;
 	}
 
+	public int getNextHeaderDec(){
+		return this.nextHeaderDec;
+	}
+
 	public void setHopLimit(int hopLimit){
 		this.hopLimitDec = hopLimit;
 		this.hopLimitBin = new Binary(Integer.toBinaryString(hopLimit), 8);
@@ -76,33 +96,61 @@ public class IPv6_Header {
 		this.hopLimitBin = hopLimit;
 	}
 
+	public int getHopLimitDec(){
+		return this.hopLimitDec;
+	}
+
 	public void setSourceAddr(IPv6_Address sourceAddr){
 		this.sourceAddress = sourceAddr;
+	}
+
+	public IPv6_Address getSourceAddr(){
+		return this.sourceAddress;
 	}
 
 	public void setDestinationAddr(IPv6_Address destinationAddr){
 		this.destinationAddress = destinationAddr;
 	}
 
+	public IPv6_Address getDestinationAddr(){
+		return this.destinationAddress;
+	}
+
 	public void displayDec(){
-		System.out.println(this.versionDec);
-		System.out.println(this.trafficClassDec);
-		System.out.println(this.flowLabelDec);
-		System.out.println(this.payloadLengthDec);
-		System.out.println(this.nextHeaderDec);
-		System.out.println(this.hopLimitDec);
+		char seperator = '-';
+		System.out.print(this.versionDec);
+		System.out.print(seperator);
+		System.out.print(this.trafficClassDec);
+		System.out.print(seperator);
+		System.out.print(this.flowLabelDec);
+		System.out.print(seperator);
+		System.out.print(this.payloadLengthDec);
+		System.out.print(seperator);
+		System.out.print(this.nextHeaderDec);
+		System.out.print(seperator);
+		System.out.print(this.hopLimitDec);
+		System.out.print(seperator);
 		this.sourceAddress.displayHex();
+		System.out.print(seperator);
 		this.destinationAddress.displayHex();
 	}
 
 	public void displayBin(){
-		System.out.println(this.versionBin.getValue());
-		System.out.println(this.trafficClassBin.getValue());
-		System.out.println(this.flowLabelBin.getValue());
-		System.out.println(this.payloadLengthBin.getValue());
-		System.out.println(this.nextHeaderBin.getValue());
-		System.out.println(this.hopLimitBin.getValue());
+		char seperator = ' ';
+		System.out.print(this.versionBin.getValue());
+		System.out.print(seperator);
+		System.out.print(this.trafficClassBin.getValue());
+		System.out.print(seperator);
+		System.out.print(this.flowLabelBin.getValue());
+		System.out.print(seperator);
+		System.out.print(this.payloadLengthBin.getValue());
+		System.out.print(seperator);
+		System.out.print(this.nextHeaderBin.getValue());
+		System.out.print(seperator);
+		System.out.print(this.hopLimitBin.getValue());
+		System.out.print(seperator);
 		this.sourceAddress.displayBin();
+		System.out.print(seperator);
 		this.destinationAddress.displayBin();
 	}
 
