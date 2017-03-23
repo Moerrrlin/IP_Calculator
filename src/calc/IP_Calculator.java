@@ -94,7 +94,11 @@ public class IP_Calculator {
 					break;
 				case 4:
 					valid_option = true;
-					System.out.println("TODO");
+					System.out.println(">>Preparing to convert IPv6 header information.\n"
+						+ ">>Please enter a binary header object to proceed:");
+					String input = IPv6_Validator.fetchUserInput("Input:");
+					IPv6_Header binaryV6Header = new IPv6_Header(input);
+					binaryV6Header.displayDec();
 					menu.close();
 					break;
 				default:

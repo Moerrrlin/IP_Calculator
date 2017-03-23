@@ -175,4 +175,30 @@ public class IPv6_Header {
 		this.setSourceAddr(sourceAddr);
 		this.setDestinationAddr(destinationAddr);
 	}
+
+	public IPv6_Header(String binaryString){
+		String[] split = binaryString.split("\\ ");
+		Binary[] parts = new Binary[6];
+		IPv6_Address[] addresses = new IPv6_Address[2];
+		for(int i = 0; i < split.length - 2; i++){
+			parts[i] = new Binary(split[i]);
+		}
+		for(int j = 0; j < 2; j++){
+			Binary[] addressParts = new Binary[8];
+			for(int h = 0; h < 128; h += 16){
+				String addrElemSeg = split[j + 6].substring(h, h + 16);
+				addressParts[h / 16] = new Binary(addrElemSeg);
+			}
+			IPv6_Address address = new IPv6_Address(addressParts);
+			addresses[j] = address;
+		}
+		this.setVersion(parts[0]);
+		this.setTrafficClass(parts[1]);
+		this.setFlowLabel(parts[2]);
+		this.setPayloadLength(parts[3]);
+		this.setNextHeader(parts[4]);
+		this.setHopLimit(parts[5]);
+		this.setSourceAddr(addresses[0]);
+		this.setDestinationAddr(addresses[1]);
+	}
 }
